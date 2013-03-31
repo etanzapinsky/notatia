@@ -83,6 +83,12 @@ STATICFILES_FINDERS = (
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
+# Used to redirect users to if not logged in
+LOGIN_URL = '/login/'
+
+# Default url successful login redirects to
+LOGIN_REDIRECT_URL = '/home/'
+
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'uu-nuf9^gu+7q4%2417prx07hx_5np-+cne4_k)3ig$d4#w*-#'
 
@@ -112,6 +118,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    
 )
 
 INSTALLED_APPS = (
