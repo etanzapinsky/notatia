@@ -1,13 +1,14 @@
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.conf import settings
 from web.forms import UserCreateForm
 
 @login_required
 def index(request):
-    return HttpResponse("Welcome!")
+    return HttpResponse("Welcome %s!" % request.user.username)
 
 def create_account(request):
     form = UserCreateForm()
