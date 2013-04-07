@@ -9,6 +9,6 @@ class Capsule(models.Model):
     tags = models.ManyToManyField(Tag, blank=True)
     title = models.CharField(max_length=100)
     text = models.TextField()
-    path = models.CharField(max_length=1024)
+    path = models.CharField(max_length=1024) # the 1024 max length may cause issues later
     last_modified = models.DateField(auto_now=True)
     first_created = models.DateField(auto_now_add=True)
