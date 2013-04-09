@@ -8,7 +8,7 @@ class Capsule(models.Model):
     authors = models.ManyToManyField(User)
     tags = models.ManyToManyField(Tag, blank=True)
     title = models.CharField(max_length=100)
-    text = models.TextField()
+    text = models.TextField(blank=True)
     path = models.CharField(max_length=1024) # the 1024 max length may cause issues later
     last_modified = models.DateField(auto_now=True)
     first_created = models.DateField(auto_now_add=True)
