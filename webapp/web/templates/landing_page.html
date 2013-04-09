@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Welcome to Notatia</h1>
+
+<div>If you have an account please <a href="{% url 'login' %}">login here</a>.</div>
+
+<div>If you dont have an account, dont worry, you can <a href="{% url 'create_account' %}">create one here</a>.</div>
+
+{% endblock %}

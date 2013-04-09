@@ -6,9 +6,11 @@ from django.shortcuts import render, redirect
 from django.conf import settings
 from web.forms import UserCreateForm
 
-@login_required
 def index(request):
-    return HttpResponse("Welcome %s!" % request.user.username)
+    if request.user.is_authenticated():
+        return HttpResponse("Welcome %s!" % request.user.username)
+    else:
+        return render(request, 'landing_page.html')
 
 def create_account(request):
     form = UserCreateForm()
