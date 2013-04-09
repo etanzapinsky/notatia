@@ -1,8 +1,13 @@
+{% load staticfiles %}
+
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <link rel="stylesheet" href="style.css" />
     <title>{% block title %}Notatia{% endblock %}</title>
+    <script src="{% static 'js/jquery-1.9.1.min.js' %}"></script>
+    <script src="{% static 'js/underscore-min.js' %}"></script>
+    <script src="{% static 'js/backbone-min.js' %}"></script>
   </head>
   <body>
     {% block content %}{% endblock %}

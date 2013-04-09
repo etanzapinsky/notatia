@@ -8,7 +8,7 @@ from web.forms import UserCreateForm
 
 def index(request):
     if request.user.is_authenticated():
-        return HttpResponse("Welcome %s!" % request.user.username)
+        return render(request, 'home_page.html', {'user': request.user.username})
     else:
         return render(request, 'landing_page.html')
 
