@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from django.utils.timezone import utc
 from django.db.models import Q
 from api.models import Capsule
-from lib import MyEncoder, int_or_none
+from utils import MyEncoder, int_or_none
 
 # figure out what the proper error code should be -> look it up in the google
 # RESTful api docs
