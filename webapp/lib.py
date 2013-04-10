@@ -14,3 +14,9 @@ class MyEncoder(json.JSONEncoder):
             return int(time.mktime(obj.timetuple()))
 
         return json.JSONEncoder.default(self, obj)
+
+def int_or_none(i):
+    try:
+        return int(i)
+    except (ValueError, TypeError):
+        return None
