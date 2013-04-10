@@ -10,5 +10,5 @@ class Capsule(models.Model):
     title = models.CharField(max_length=100)
     text = models.TextField(blank=True)
     path = models.CharField(max_length=1024) # the 1024 max length may cause issues later
-    last_modified = models.DateField(auto_now=True)
-    first_created = models.DateField(auto_now_add=True)
+    last_modified = models.DateTimeField(auto_now=True)
+    first_created = models.DateTimeField(auto_now_add=True)
