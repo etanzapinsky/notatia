@@ -5,12 +5,16 @@ from django.http import HttpResponse
 from api.models import Capsule
 from lib import MyEncoder
 
+# figure out what the proper error code should be -> look it up in the google
+# RESTful api docs
+not_yet_implemented = json.dumps({'error': 'Not yet implemented.'})
+
 # all the api functions should have an @login_required, but they shouldn't
 # redirect to the default 404 page since that would suck for someone using the
 # api, they should go to a custom 404 which returns a JSON "endpoint does not
 # exist"
 def index(request):
-    pass
+    return HttpResponse(not_yet_implemented, content_type="application/json")
 
 def create_capsule(request):
     query_dict = request.GET
@@ -29,11 +33,12 @@ def create_capsule(request):
 
 
 def create_tag(request):
-    pass
+    return not_yet_implemented
 
 def recent_capsules(request):
-    query_dict  = request.GET
-    capsules = Capsule.objects.filter(authors=request.user)
+    query_dict = request.GET
+    limit = query_dict.get('limit', 10)
+    capsules = Capsule.objects.filter(authors=request.user)[:limit]
     caps = [capsule.__dict__ for capsule in capsules]
     # need to do this to get rid of data we don't want to return to the user
     for cap in caps:
@@ -42,10 +47,10 @@ def recent_capsules(request):
                         content_type="application/json")
 
 def get_capsule(request, capsule_id):
-    pass
+    return HttpResponse(not_yet_implemented, content_type="application/json")
 
 def filter_capsules(request):
-    pass
+    return HttpResponse(not_yet_implemented, content_type="application/json")
 
 def get_author(request, author_id):
-    pass
+    return HttpResponse(not_yet_implemented, content_type="application/json")
