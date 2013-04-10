@@ -90,20 +90,31 @@ def filter_capsules(request):
         capsules = capsules.filter(path=path)
     if created_before:
         capsules = capsules.filter(first_created__lt=
-                                   datetime.datetime.utcfromtimestamp(created_before).replace(tzinfo=utc))
+                                   datetime.datetime.utcfromtimestamp(created_before) \
+                                       .replace(tzinfo=utc))
     if created_after:
         capsules = capsules.filter(first_created__gt=
-                                   datetime.datetime.utcfromtimestamp(created_after).replace(tzinfo=utc))
+                                   datetime.datetime.utcfromtimestamp(created_after) \
+                                       .replace(tzinfo=utc))
     if modified_before:
         capsules = capsules.filter(last_modified__lt=
-                                   datetime.datetime.utcfromtimestamp(modified_before).replace(tzinfo=utc))
+                                   datetime.datetime.utcfromtimestamp(modified_before) \
+                                       .Replace(tzinfo=utc))
     if modified_after:
         capsules = capsules.filter(last_modified__gt=
-                                   datetime.datetime.utcfromtimestamp(modified_after).replace(tzinfo=utc))
+                                   datetime.datetime.utcfromtimestamp(modified_after) \
+                                       .replace(tzinfo=utc))
     return HttpResponse(json.dumps({'data': sanitize_capsule_list(capsules[:limit])},
                                    cls=MyEncoder),
                         content_type="application/json")
 
 
-def get_author(request, author_id):
-    return HttpResponse(not_yet_implemented, content_type="application/json")
+def get_author(request, username):
+    user = User.objects.get(username=username)
+    user_dict = user.__dict__
+    user_dict.pop('_state')
+    user_dict.pop('is_superuser')
+    user_dict.pop('is_staff')
+    user_dict.pop('password')
+    return HttpResponse(json.dumps({'data': {'author': user_dict}}, cls=MyEncoder),
+                        content_type="application/json")

@@ -9,5 +9,5 @@ urlpatterns = patterns('',
     url(r'^recent_capsules/$', views.recent_capsules, name='recent_capsules'),
     url(r'^capsule/(?P<capsule_id>\d+)$', views.get_capsule, name='capsule'),
     url(r'^filter/capsules/$', views.filter_capsules, name='filter_capsules'),
-    url(r'^author/(?P<author_id>\d+)$', views.get_author, name='author'),
+    url(r'^author/(?P<username>[\w.@+-]+)$', views.get_author, name='author'),
 )
