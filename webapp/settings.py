@@ -86,7 +86,7 @@ STATICFILES_FINDERS = (
 LOGIN_URL = '/login/'
 
 # Default url successful login redirects to
-LOGIN_REDIRECT_URL = '/home/'
+LOGIN_REDIRECT_URL = '/'
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'uu-nuf9^gu+7q4%2417prx07hx_5np-+cne4_k)3ig$d4#w*-#'

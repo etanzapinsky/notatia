@@ -28,4 +28,3 @@ def create_account(request):
                   'create_account.html',
                   {'form' : form,
                    'next' : settings.LOGIN_REDIRECT_URL})
-
