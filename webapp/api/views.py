@@ -7,11 +7,11 @@ from django.contrib.auth.models import User
 from django.utils.timezone import utc
 from django.db.models import Q
 from api.models import Capsule
-from utils import MyEncoder, int_or_none
+from utils import MyEncoder, int_or_none, api_login_required
 
 # figure out what the proper error code should be -> look it up in the google
 # RESTful api docs
-not_yet_implemented = json.dumps({'error': 'Not yet implemented.'})
+not_yet_implemented = json.dumps({'error': {'message': 'Not yet implemented.'}})
 
 def sanitize_capsule_list(capsules):
     caps = [capsule.__dict__ for capsule in capsules]
@@ -27,6 +27,7 @@ def sanitize_capsule_list(capsules):
 def index(request):
     return HttpResponse(not_yet_implemented, content_type="application/json")
 
+@api_login_required
 def create_capsule(request):
     query_dict = request.GET
     response_data = {}
@@ -42,10 +43,11 @@ def create_capsule(request):
     return HttpResponse(json.dumps({'data': response_data}),
                             content_type="application/json")
 
-
+@api_login_required
 def create_tag(request):
     return not_yet_implemented
 
+@api_login_required
 def recent_capsules(request):
     query_dict = request.GET
     limit = query_dict.get('limit', 10)
@@ -54,9 +56,11 @@ def recent_capsules(request):
     return HttpResponse(json.dumps({'data': caps}, cls=MyEncoder),
                         content_type="application/json")
 
+@api_login_required
 def get_capsule(request, capsule_id):
     return HttpResponse(not_yet_implemented, content_type="application/json")
 
+@api_login_required
 def filter_capsules(request):
     query_dict = request.GET
     limit = query_dict.get('limit', 10)
@@ -108,7 +112,7 @@ def filter_capsules(request):
                                    cls=MyEncoder),
                         content_type="application/json")
 
-
+@api_login_required
 def get_author(request, username):
     user = User.objects.get(username=username)
     user_dict = user.__dict__

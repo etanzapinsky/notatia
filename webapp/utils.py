@@ -1,6 +1,7 @@
 import json
 import time
 import datetime
+from django.http import HttpResponse
 
 class MyEncoder(json.JSONEncoder):
 
@@ -20,3 +21,13 @@ def int_or_none(i):
         return int(i)
     except (ValueError, TypeError):
         return None
+
+def api_login_required(fn):
+    def wrapped(*args, **kwargs):
+        request = args[0]
+        if not request.user.is_authenticated():
+            return HttpResponse(json.dumps({'error': {'message': 'Access Denied',
+                                                      'code': 401}}),
+                                content_type="application/json")
+        return fn(*args, **kwargs)
+    return wrapped
