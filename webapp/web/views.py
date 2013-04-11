@@ -4,13 +4,14 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.conf import settings
+
 from web.forms import UserCreateForm
 
 def index(request):
     if request.user.is_authenticated():
         return render(request, 'home_page.html', {'user': request.user.username})
     else:
-        return render(request, 'landing_page.html')
+        return render(request, 'landing_page.html', c)
 
 def create_account(request):
     form = UserCreateForm()

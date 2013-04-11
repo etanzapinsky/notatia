@@ -6,6 +6,8 @@ from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.utils.timezone import utc
 from django.db.models import Q
+from django.views.decorators.http import require_http_methods
+
 from api.models import Capsule
 from utils import MyEncoder, int_or_none, api_login_required
 
@@ -27,21 +29,39 @@ def sanitize_capsule_list(capsules):
 def index(request):
     return HttpResponse(not_yet_implemented, content_type="application/json")
 
-@api_login_required
 def create_capsule(request):
-    query_dict = request.GET
-    response_data = {}
+    query_dict = json.loads(request.body)
     try:
         c = Capsule(title=query_dict.get('title'), path=query_dict.get('path'))
         c.full_clean()
         c.save()
         c.authors.add(request.user)
-        response_data['success'] = 'true'
-    except ValidationError:
-        response_data['error'] = 'There was a Capsule Validation Error.'
-
-    return HttpResponse(json.dumps({'data': response_data}),
+        cap = c.__dict__
+        authors = [user['username'] for user in c.authors.all().values('username')]
+        cap.update({'authors': authors})
+        cap.pop('_state')
+        return HttpResponse(json.dumps(cap, cls=MyEncoder),
                             content_type="application/json")
+    except ValidationError:
+        response_data = {}
+        response_data['error'] = 'There was a Capsule Validation Error.'
+        response_data['code'] = 500
+        return HttpResponse(json.dumps({'data': response_data}),
+                            content_type="application/json",
+                            status=500)
+
+def get_capsule(request, capsule_id):
+    return None
+
+@api_login_required
+@require_http_methods(["GET", "POST"])
+def process_capsule(request, capsule_id):
+    if request.method == 'POST':
+        return create_capsule(request)
+    if request.method == 'GET':
+        return get_capsule(request, capsule_id)
+    # return HttpResponse(not_yet_implemented, content_type="application/json")
+
 
 @api_login_required
 def create_tag(request):
@@ -55,10 +75,6 @@ def recent_capsules(request):
     caps = sanitize_capsule_list(capsules)
     return HttpResponse(json.dumps({'data': caps}, cls=MyEncoder),
                         content_type="application/json")
-
-@api_login_required
-def get_capsule(request, capsule_id):
-    return HttpResponse(not_yet_implemented, content_type="application/json")
 
 @api_login_required
 def filter_capsules(request):

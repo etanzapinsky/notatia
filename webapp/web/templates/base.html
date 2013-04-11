@@ -8,6 +8,8 @@
     <script src="{% static 'js/jquery-1.9.1.min.js' %}"></script>
     <script src="{% static 'js/underscore-min.js' %}"></script>
     <script src="{% static 'js/backbone-min.js' %}"></script>
+    <script src="{% static 'js/csrf.js' %}"></script>
+    {% block scripts %}{% endblock %}
   </head>
   <body>
     {% block content %}{% endblock %}

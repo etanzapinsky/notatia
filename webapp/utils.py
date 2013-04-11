@@ -28,6 +28,7 @@ def api_login_required(fn):
         if not request.user.is_authenticated():
             return HttpResponse(json.dumps({'error': {'message': 'Access Denied',
                                                       'code': 401}}),
-                                content_type="application/json")
+                                content_type="application/json",
+                                status=401)
         return fn(*args, **kwargs)
     return wrapped

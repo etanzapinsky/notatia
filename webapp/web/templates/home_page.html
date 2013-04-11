@@ -1,7 +1,12 @@
 {% extends "base.html" %}
+{% load staticfiles %}
+
+{% block scripts %}
+<script src="{% static 'js/feed.js' %}"></script>
+{% endblock %}
 
 {% block content %}
-
+{% csrf_token %}
 <div>Welcome {{ user }}!</div>
 
 <div><a href="{% url 'logout' %}">Logout</a></div>
