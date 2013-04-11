@@ -1,7 +1,7 @@
 import json
 import datetime
 
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.utils.timezone import utc
@@ -29,18 +29,27 @@ def sanitize_capsule_list(capsules):
 def index(request):
     return HttpResponse(not_yet_implemented, content_type="application/json")
 
+def get_capsule(request, capsule_id):
+    try:
+        cap = Capsule.objects.get(id=capsule_id)
+        return HttpResponse(json.dumps(cap.to_dict(), cls=MyEncoder),
+                            content_type="application/json")
+    except ObjectDoesNotExist:
+        return HttpReponse(json.dumps({'error':
+                                           {'message': 'Capsule Does Not Exist',
+                                            'code': 404}
+                                       }),
+                           content_type="application/json",
+                           status=404)
+
 def create_capsule(request):
     query_dict = json.loads(request.body)
     try:
-        c = Capsule(title=query_dict.get('title'), path=query_dict.get('path'))
+        c = Capsule(path=query_dict.get('path'), text=query_dict.get('text'))
         c.full_clean()
         c.save()
         c.authors.add(request.user)
-        cap = c.__dict__
-        authors = [user['username'] for user in c.authors.all().values('username')]
-        cap.update({'authors': authors})
-        cap.pop('_state')
-        return HttpResponse(json.dumps(cap, cls=MyEncoder),
+        return HttpResponse(json.dumps(cap.to_dict(), cls=MyEncoder),
                             content_type="application/json")
     except ValidationError:
         response_data = {}
@@ -48,18 +57,19 @@ def create_capsule(request):
         response_data['code'] = 500
         return HttpResponse(json.dumps({'data': response_data}),
                             content_type="application/json",
-                            status=500)
-
-def get_capsule(request, capsule_id):
-    return None
+                            status=500)        
 
 @api_login_required
-@require_http_methods(["GET", "POST"])
+@require_http_methods(["GET", "POST", "PUT", "DELETE"])
 def process_capsule(request, capsule_id):
-    if request.method == 'POST':
-        return create_capsule(request)
     if request.method == 'GET':
         return get_capsule(request, capsule_id)
+    if request.method == 'POST':
+        return create_capsule(request)
+    if request.method == 'PUT':
+        return update_capsule(request, capsule_id)
+    if request.method == 'DELETE':
+        return delete_capsule(request, capsule_id)
     # return HttpResponse(not_yet_implemented, content_type="application/json")
 
 
