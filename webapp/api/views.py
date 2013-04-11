@@ -8,7 +8,7 @@ from django.utils.timezone import utc
 from django.db.models import Q
 from django.views.decorators.http import require_http_methods
 
-from api.models import Capsule
+from api.models import Capsule, Tag
 from utils import MyEncoder, int_or_none, api_login_required
 
 # figure out what the proper error code should be -> look it up in the google
@@ -31,11 +31,11 @@ def index(request):
 
 def get_capsule(request, capsule_id):
     try:
-        cap = Capsule.objects.get(id=capsule_id)
+        cap = Capsule.objects.get(pk=capsule_id)
         return HttpResponse(json.dumps(cap.to_dict(), cls=MyEncoder),
                             content_type="application/json")
     except ObjectDoesNotExist:
-        return HttpReponse(json.dumps({'error':
+        return HttpResponse(json.dumps({'error':
                                            {'message': 'Capsule Does Not Exist',
                                             'code': 404}
                                        }),
@@ -43,21 +43,61 @@ def get_capsule(request, capsule_id):
                            status=404)
 
 def create_capsule(request):
+    # shouldnt have to deal with authors since capsule creation can only be from
+    # the user that's logged in
     query_dict = json.loads(request.body)
+    # have to pop tags so that we can create the capsule using query_dict, but
+    # then we have to be able to add them to the capsule later
+    tags = Tag.objects.filter(name__in=query_dict.pop('tags'))
     try:
-        c = Capsule(path=query_dict.get('path'), text=query_dict.get('text'))
-        c.full_clean()
-        c.save()
-        c.authors.add(request.user)
+        cap = Capsule(**query_dict)
+        cap.full_clean()
+        cap.save()
+        cap.authors.add(request.user)
+        cap.tags.add(*tags)
         return HttpResponse(json.dumps(cap.to_dict(), cls=MyEncoder),
                             content_type="application/json")
     except ValidationError:
-        response_data = {}
-        response_data['error'] = 'There was a Capsule Validation Error.'
         response_data['code'] = 500
         return HttpResponse(json.dumps({'data': response_data}),
                             content_type="application/json",
-                            status=500)        
+                            status=500)
+
+def update_capsule(request, capsule_id):
+    query_dict = json.loads(request.body)
+    try:
+        cap = Capsule.objects.filter(pk=capsule_id)
+        query_dict.pop('first_created')
+        query_dict.pop('last_modified')
+        query_dict.pop('id')
+        tags = Tag.objects.filter(name__in=query_dict.pop('tags'))
+        authors = User.objects.filter(username__in=query_dict.pop('authors'))
+        cap.update(**query_dict)
+        cap = cap[0] # can do this since cap is filtered on pk
+        cap.authors.add(*authors)
+        cap.tags.add(*tags)
+        return HttpResponse(json.dumps(cap.to_dict(), cls=MyEncoder),
+                            content_type="application/json")        
+    except ObjectDoesNotExist:
+        return HttpResponse(json.dumps({'error':
+                                           {'message': 'Capsule Does Not Exist',
+                                            'code': 404}
+                                       }),
+                           content_type="application/json",
+                           status=404)
+
+def delete_capsule(request, capsule_id):
+    try:
+        cap = Capsule.objects.get(pk=capsule_id)
+        cap.delete()
+    except ObjectDoesNotExist:
+        return HttpResponse(json.dumps({'error':
+                                           {'message': 'Capsule Does Not Exist',
+                                            'code': 404}
+                                       }),
+                           content_type="application/json",
+                           status=404)
+
 
 @api_login_required
 @require_http_methods(["GET", "POST", "PUT", "DELETE"])
