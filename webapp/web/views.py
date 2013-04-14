@@ -16,6 +16,9 @@ def index(request):
 def about(request):
    return render(request, 'about.html')
    
+def contact(request):
+    return render(request, 'contact.html')
+   
 def create_account(request):
     form = UserCreateForm()
     if request.method == 'POST':
@@ -32,3 +35,4 @@ def create_account(request):
                   'create_account.html',
                   {'form' : form,
                    'next' : settings.LOGIN_REDIRECT_URL})
+
