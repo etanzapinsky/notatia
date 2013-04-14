@@ -64,9 +64,13 @@ button {
 }
 
 .login {
-	border: 3px solid #99CCCC;
-	border-radius: 5px;
-	width:500px;
+	background: #99CCCC;
+	height: 50px;
+	width: 200px;
+	border-radius: 25px;
+	border-style: none;
+	font-size: 1.5em;
+	float: right;
 
 }
 
