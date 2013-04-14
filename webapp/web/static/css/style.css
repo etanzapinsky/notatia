@@ -57,7 +57,7 @@ button {
 }
 
 #info {
-	float: center;
-	font-size: 2em;
+	margin-left: 200px;
+	font-size: 1em;
 	
 }
