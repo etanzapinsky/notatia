@@ -13,9 +13,9 @@
 
 {% block content %}
 {% csrf_token %}
-<div>Welcome {{ user }}!</div>
+<div id = "welcome" class = "login">Welcome {{ user }}!</div>
 
-<div><a href="{% url 'logout' %}">Logout</a></div>
+<div id = "logout" class = "login"><a href="{% url 'logout' %}">Logout</a></div>
 
 <div>
   <form>
