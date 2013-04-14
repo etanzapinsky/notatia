@@ -13,7 +13,7 @@ urlpatterns = patterns('',
         {'next_page': '/'}, name='logout'),
     url(r'^create_account/$', 'web.views.create_account', name='create_account'),
     url(r'^api/', include('api.urls', namespace='api')),
-
+    url(r'^about/',$, 'web.views.about', name = 'about'),
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
