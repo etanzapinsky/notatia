@@ -21,6 +21,9 @@ def contact(request):
     
 def faq(request):
     return render(request, 'faq.html')
+
+def team(request):
+    return render(request, 'team.html')
    
 def create_account(request):
     form = UserCreateForm()
