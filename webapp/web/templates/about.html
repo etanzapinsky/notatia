@@ -1,1 +1,9 @@
 {% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+{% csrf_token %}
+<div>Hey {{ user }}!</div>
+
+
+{% endblock %}

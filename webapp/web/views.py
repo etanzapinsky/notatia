@@ -12,7 +12,10 @@ def index(request):
         return render(request, 'home_page.html', {'user': request.user.username})
     else:
         return render(request, 'landing_page.html')
-
+        
+def about(request):
+   return render(request, 'about.html')
+   
 def create_account(request):
     form = UserCreateForm()
     if request.method == 'POST':
