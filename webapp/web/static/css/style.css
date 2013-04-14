@@ -58,6 +58,14 @@ button {
 
 #info {
 	margin-left: 200px;
+	margin-top: 200px;
 	font-size: 1em;
 	
 }
+
+.login {
+	float: right;
+	border: 1px;
+	color:#99CCCC;
+}
+
