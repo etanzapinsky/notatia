@@ -15,7 +15,7 @@ urlpatterns = patterns('',
     url(r'^api/', include('api.urls', namespace='api')),
     url(r'^about/$', 'web.views.about', name = 'about'),
     url(r'^contact/$', 'web.views.contact', name = 'contact'),
-    url(r'^faq/$', 'web.views.contact', name = 'faq'),
+    url(r'^faq/$', 'web.views.faq', name = 'faq'),
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
