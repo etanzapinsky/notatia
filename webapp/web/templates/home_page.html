@@ -3,6 +3,12 @@
 
 {% block scripts %}
 <script src="{% static 'js/feed.js' %}"></script>
+<script type="text/javascript">
+  $(function() {
+  $('#tags').tagsInput();
+  $('#tags').addTag('foo');
+  });
+</script>
 {% endblock %}
 
 {% block content %}
@@ -11,4 +17,17 @@
 
 <div><a href="{% url 'logout' %}">Logout</a></div>
 
+<div>
+  <form>
+    <button>+ new capsule</button>
+  </form>
+</div>
+<div class="addcapsule">
+  <form>
+    <textarea id="text" placeholder="Capsule text goes here"></textarea>
+    <input name="tags" id="tags" value="test1" />
+    <button>+</button>
+  </form>
+  
+</div>
 {% endblock %}

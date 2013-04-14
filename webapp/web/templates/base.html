@@ -3,15 +3,37 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <link rel="stylesheet" href="style.css" />
-    <title>{% block title %}Notatia{% endblock %}</title>
+    <title>{% block title %}Notatita | Your Corporate Collaborative Memory{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/themes/start/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    {% block styles %}{% endblock %}
     <script src="{% static 'js/jquery-1.9.1.min.js' %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js"></script>
     <script src="{% static 'js/underscore-min.js' %}"></script>
     <script src="{% static 'js/backbone-min.js' %}"></script>
     <script src="{% static 'js/csrf.js' %}"></script>
     {% block scripts %}{% endblock %}
   </head>
   <body>
+    <div class="container">
+      <div class="navi">
+        <img src="{% static 'img/notatia_logo.png' %}" width="200px"/>
+        <ul>
+          <li>About</li>
+          <li>|</li>
+          <li>Team</li>
+          <li>|</li>
+          <li>Contact</li>
+          <li>|</li>
+          <li>FAQ</li>
+          <li>|</li>
+          <li>Adopt Us</li>
+          <li>|</li>
+          <li>Careers</li>
+        </ul>
+      </div>
+    </div>
     {% block content %}{% endblock %}
   </body>
 </html>

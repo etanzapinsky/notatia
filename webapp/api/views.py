@@ -98,7 +98,6 @@ def delete_capsule(request, capsule_id):
                            content_type="application/json",
                            status=404)
 
-
 @api_login_required
 @require_http_methods(["GET", "POST", "PUT", "DELETE"])
 def process_capsule(request, capsule_id):
@@ -111,7 +110,6 @@ def process_capsule(request, capsule_id):
     if request.method == 'DELETE':
         return delete_capsule(request, capsule_id)
     # return HttpResponse(not_yet_implemented, content_type="application/json")
-
 
 @api_login_required
 def create_tag(request):
