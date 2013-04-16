@@ -50,10 +50,25 @@ textarea {
 button {
 	background: #99CCCC;
 	height: 50px;
-	width: 200px;
 	border-radius: 25px;
 	border-style: none;
 	font-size: 1.5em;
+}
+
+#new_capsule {
+	width: 200px;
+}
+
+#add_capsule {
+	width: 50px;
+	margin-left: 400px;
+	margin-top: 10px;
+}
+
+#form_float {
+	height: 50px;
+	width: 487px;
+
 }
 
 #info {

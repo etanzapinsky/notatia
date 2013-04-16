@@ -1,12 +1,20 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/jquery.tagsinput.css' %}">
+{% endblock %}
+
 {% block scripts %}
 <script src="{% static 'js/feed.js' %}"></script>
+<script src="{% static 'js/jquery.tagsinput.min.js' %}"></script>
 <script type="text/javascript">
   $(function() {
-  $('#tags').tagsInput();
-  $('#tags').addTag('foo');
+    $('#tags').tagsInput({
+        'width':'488px',
+        'height': '50px',
+        'placeholderColor' : '#999'
+    });
   });
 </script>
 {% endblock %}
@@ -14,19 +22,22 @@
 {% block content %}
 {% csrf_token %}
 
-<div class="login">Welcome {{ user }}!</div>
-<div class="login"><a href="{% url 'logout' %}">Logout</a></div>
+
 
 <div>
+  <div class="login">Welcome {{ user }}!</div>
+  <div class="login"><a href="{% url 'logout' %}">Logout</a></div>
   <form>
-    <button>+ new capsule</button>
+    <button id="new_capsule">+ new capsule</button>
   </form>
 </div>
 <div class="addcapsule">
   <form>
     <textarea id="text" placeholder="Capsule text goes here"></textarea>
     <input name="tags" id="tags" value="" />
-    <button>+</button>
+    <div id="form_float">
+      <button id="add_capsule">+</button>
+    </div>
   </form>
   
 </div>
