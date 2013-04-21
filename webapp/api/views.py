@@ -172,7 +172,7 @@ def filter_capsules(request):
         capsules = capsules.filter(last_modified__gt=
                                    datetime.datetime.utcfromtimestamp(modified_after) \
                                        .replace(tzinfo=utc))
-    return HttpResponse(json.dumps({'data': sanitize_capsule_list(capsules[:limit])},
+    return HttpResponse(json.dumps(sanitize_capsule_list(capsules[:limit]),
                                    cls=MyEncoder),
                         content_type="application/json")
 
