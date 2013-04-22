@@ -21,7 +21,8 @@ var CapsuleList = Backbone.View.extend({
 
 var Router = Backbone.Router.extend({
 	routes: {
-		'': 'home'
+		'': 'home',
+		'new': 'editCapsule'
 	}
 });
 
