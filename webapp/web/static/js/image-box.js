@@ -12,9 +12,9 @@ $(document).ready(function() {
             'width':  0,
             'height': 0
         });
-        selection.appendTo($container);
+        selection.appendTo($(this));
 
-        $container.on('mousemove', function(e) {
+        $(this).on('mousemove', function(e) {
             var move_x = e.pageX,
             move_y = e.pageY,
             width  = Math.abs(move_x - click_x),
@@ -32,13 +32,10 @@ $(document).ready(function() {
             });
         })
     }).on('mouseup', function(e) {
-        $container.off('mousemove');
-        // debugger;
-        var comment = selection.clone();
+        $(this).off('mousemove');
+        var comment = selection.clone().appendTo($(this));
         comment.addClass('comment-box');
         comment.removeClass('selection-box');
-        comment.appendTo($(this));
         selection.remove();
-        // delete $selection;
     });
 }); 
