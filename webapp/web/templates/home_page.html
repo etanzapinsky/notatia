@@ -34,18 +34,21 @@
 </div>
 		
 <div class="page"></div>
-<!--
+
+</div>
+
+<script type="text/template" id="edit-capsule-template">
 <div class="addcapsule">
-  <form>
-    <textarea id="text" placeholder="Capsule text goes here"></textarea>
+  <form class="edit-capsule-form">
+  	<input type="text"  name="title" />
+    <textarea id="text" name="text" placeholder="Capsule text goes here"></textarea>
     <input name="tags" id="tags" value="" />
     <div id="form_float">
-      <button id="add_capsule">+</button>
+      <button type="submit" id="add_capsule">+</button>
     </div>
   </form> 
 </div>
--->
-</div>
+</script>
 
 <script type="text/template" id="capsule-list-template">
 
@@ -68,6 +71,8 @@
 </tbody>
 </table>
 </script>
+
+
 
 
 {% endblock %}

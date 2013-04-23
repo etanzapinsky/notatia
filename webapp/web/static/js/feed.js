@@ -1,5 +1,32 @@
+$.fn.serializeObject = function() {
+      var o = {};
+      var a = this.serializeArray();
+      $.each(a, function() {
+          if (o[this.name] !== undefined) {
+              if (!o[this.name].push) {
+                  o[this.name] = [o[this.name]];
+              }
+              o[this.name].push(this.value || '');
+          } else {
+              o[this.name] = this.value || '';
+          }
+      });
+      return o;
+};
+
+
 var Capsules = Backbone.Collection.extend({
 	url: '/api/filter/capsules/'
+});
+
+var Capsule = Backbone.Model.extend({
+	urlRoot: '/api/capsule/',
+    defaults: {
+        title: '',
+        text: '',
+        path: '',
+        tags: ''
+    }
 });
 
 var CapsuleList = Backbone.View.extend({
@@ -17,6 +44,34 @@ var CapsuleList = Backbone.View.extend({
 	}
 });
 
+var EditCapsule = Backbone.View.extend({
+	el: '.page',
+	render: function(){
+		var template = _.template($('#edit-capsule-template').html(), {})
+		this.$el.html(template);
+		
+	},
+	events: {
+		'submit .edit-capsule-form': 'saveCapsule'
+	},
+	saveCapsule: function (ev){
+		var capsuleDetails = $(ev.currentTarget).serializeObject();
+		var capsule = new Capsule();
+		capsule.save({
+			title: capsuleDetails.title,
+			text: capsuleDetails.text,
+			tags: capsuleDetails.tags
+		}, {
+			success: function(){
+				console.log(capsule.toJSON());
+			}
+			
+		});
+		console.log(capsuleDetails);
+		return false;
+	}
+});
+
 
 
 var Router = Backbone.Router.extend({
@@ -30,9 +85,16 @@ var Router = Backbone.Router.extend({
 $(document).ready(function() {
 
 var capsuleList = new CapsuleList();
+var editCapsule = new EditCapsule();
+
 var router = new Router();
+
 router.on('route:home', function() {
 	capsuleList.render();
+});
+
+router.on('route:editCapsule', function() {
+	editCapsule.render();
 });
 
 Backbone.history.start();
