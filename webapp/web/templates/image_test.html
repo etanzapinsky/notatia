@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+ 
+{% block scripts %}
+  <script src="{% static 'js/image-box.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+  <div class="drawing-container">
+    <img src="http://i.imgur.com/smAy2ib.jpg" alt="dogs">
+  </div>
+{% endblock %}

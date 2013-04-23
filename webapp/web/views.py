@@ -24,7 +24,10 @@ def faq(request):
 
 def team(request):
     return render(request, 'team.html')
-   
+
+def image_test(request):
+    return render(request, 'image_test.html')
+
 def create_account(request):
     form = UserCreateForm()
     if request.method == 'POST':
