@@ -37,5 +37,22 @@ $(document).ready(function() {
         comment.addClass('comment-box');
         comment.removeClass('selection-box');
         selection.remove();
+
+        var cap_height = 100
+        var cap_width = 100
+
+        var cap_top = (e.pageY < cap_height) ? e.pageY : e.pageY - cap_height;
+        var cap_left = (document.witdh - e.pageX < cap_width) ? e.pageX - cap_width : e.pageX;
+
+        var cap = $('<div>').css({
+            'position': 'absolute',
+            'width': cap_width,
+            'height': cap_height,
+            'top': cap_top,
+            'left': cap_left,
+            'border': '1px solid red'
+        });
+
+        cap.appendTo($(this))
     });
 }); 
