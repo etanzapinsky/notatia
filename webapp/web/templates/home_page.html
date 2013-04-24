@@ -8,17 +8,6 @@
 {% block scripts %}
 <script src="{% static 'js/feed.js' %}"></script>
 <script src="{% static 'js/jquery.tagsinput.min.js' %}"></script>
-<script type="text/javascript">
-  $(function() {
-    $('#tags').tagsInput({
-        'width':'488px',
-        'height': '50px',
-        'placeholderColor' : '#999'
-    });
-  });
-</script>
-
-
 {% endblock %}
 
 {% block content %}
@@ -39,12 +28,16 @@
 
 <script type="text/template" id="edit-capsule-template">
 <div class="addcapsule">
+<h1><%= capsule ? 'Update' : 'Create' %> Capsule</h1>
   <form class="edit-capsule-form">
-  	<input type="text"  name="title" />
-    <textarea id="text" name="text" placeholder="Capsule text goes here"></textarea>
-    <input name="tags" id="tags" value="" />
+  	<input type="text"  name="title" value="<%= capsule ? capsule.get('title') : '' %>"/>
+    <textarea id="text" name="text" placeholder="Capsule text goes here"><%= capsule ? capsule.get('text') : '' %></textarea>
+    <!--<input name="tags" id="tags" value="<%= capsule ? capsule.get('tags') : '' %>" />-->
+	<% if(capsule) { %>
+		<input type="hidden" name="id" value="<%= capsule.id %>" />
+	<% }; %>
     <div id="form_float">
-      <button type="submit" id="add_capsule">+</button>
+      <button type="submit" id="add_capsule"><%= capsule ? 'Update' : '+' %></button>
     </div>
   </form> 
 </div>
@@ -57,7 +50,7 @@
 <tr>
 <th>Title</th>
 <th>Text</th>
-<th>Path</th>
+<th></th>
 </tr>
 </thead>
 <tbody>
@@ -65,7 +58,7 @@
 		<tr>
 			<td><%= capsule.get('title')%></td>
 			<td><%= capsule.get('text')%></td>
-			<td><%= capsule.get('path')%></td>
+			<td><a href='#/edit/<%= capsule.id %>'>Edit</a></td>
 		</tr>
 	<% }) %>
 </tbody>
