@@ -50,7 +50,8 @@ $(document).ready(function() {
             'height': cap_height,
             'top': cap_top,
             'left': cap_left,
-            'border': '1px solid red'
+            'border': '1px solid red',
+            'background': 'white'
         });
 
         cap.appendTo($(this))

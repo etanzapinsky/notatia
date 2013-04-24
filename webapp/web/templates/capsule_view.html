@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block scripts %}
+  <script src="{% static 'js/capsule-preview.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row-fluid">
+    <div class="span8 scaffold main-capsule">
+      <h1>Main Capsule Title</h1>
+      <div class="main-capsule-body">The main <a href="#" class="previewable">capsule</a> would be here. Now let's write some more text to fill out this fake capsule so that I can manipulate it properly. Fundementally, all that the frontend will be doing is manipulating the DOM so that the text will have many bells and wistles associated with it. We should be able to write free form text and add images. For now if someone would to want to add a webpage they would have to copy over the relevant section of the text.</div>
+    </div>
+    <div class="span4 scaffold">
+      <h3>Linked Capsules</h3>
+      <div class="row friend-capsule">I'm a linked Capsule!</div>
+      <div class="row friend-capsule"></div>
+      <div class="row friend-capsule"></div>
+      <div class="row friend-capsule"></div>
+      <div class="row friend-capsule"></div>
+    </div>
+  </div>
+</div>
+{% endblock %}

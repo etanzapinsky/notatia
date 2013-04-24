@@ -99,3 +99,37 @@ button {
     border: 2px solid #65909A;
     border-radius: 5px;
 }
+
+.scaffold {
+    background-color: #FFAEB9;
+}
+
+.row {
+    margin: 0 0 10px 0;
+    background-color: #DC143C;
+}
+
+.main-capsule {
+    height: 600px;
+}
+
+.friend-capsule {
+    height: 100px;
+}
+
+.main-capsule-body {
+    border: 1px solid black;
+    min-height: 90%;
+    position: relative;
+}
+
+.hover-box {
+    height: 100px;
+    width: 100px;
+    background-color: green;
+    position: fixed;
+}
+
+.previewable {
+    background-color: yellow;
+}

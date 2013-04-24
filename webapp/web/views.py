@@ -28,6 +28,9 @@ def team(request):
 def image_test(request):
     return render(request, 'image_test.html')
 
+def capsule_view(request):
+    return render(request, 'capsule_view.html')
+
 def create_account(request):
     form = UserCreateForm()
     if request.method == 'POST':
