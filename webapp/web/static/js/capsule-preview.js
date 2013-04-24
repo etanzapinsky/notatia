@@ -1,6 +1,7 @@
 $(document).ready(function() {
     var previewable = $('.previewable');
     var preview = $('<div>').addClass('hover-box');
+    var new_capsule = $('<div>').addClass('new-capsule-box');
 
     previewable.on('click', function(e) {
         preview.css({
@@ -11,11 +12,23 @@ $(document).ready(function() {
     });
 
     $(document).mouseup(function (e) {
-        var container = $('.hover-box');
+        var selection;
+        var hover_box = $('.hover-box');
+        var new_capsule_box = $('.new-capsule-box');
 
-        if (container.has(e.target).length === 0) {
-            container.remove();
+        if (hover_box.has(e.target).length === 0) {
+            hover_box.remove();
         }
+
+        if (window.getSelection) {
+            selection = window.getSelection();
+        } else if (document.selection) {
+            selection = document.selection.createRange();
+        }
+        if (selection.toString() === '') {
+            new_capsule_box.remove();
+        }
+
     });
 
     $('.main-capsule-body').bind('mouseup', function(e){
@@ -27,7 +40,11 @@ $(document).ready(function() {
             selection = document.selection.createRange();
         }
         if (selection.toString() !== '') {
-            console.log(selection.toString());            
+            new_capsule.css({
+                'top': e.pageY,
+                'left': e.pageX
+            })
+            $(this).after(new_capsule);
         }
     });
 });

@@ -133,3 +133,10 @@ button {
 .previewable {
     background-color: yellow;
 }
+
+.new-capsule-box {
+    height: 100px;
+    width: 100px;
+    background-color: purple;
+    position: fixed;
+}
