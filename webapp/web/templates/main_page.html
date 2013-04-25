@@ -1,10 +1,14 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 
+{% block scripts %}
+  <script src="{% static 'js/search.js' %}"></script>
+{% endblock %}
+
 {% block content %}
 
 <div class="container">
-  <form class="form-search text-center">
+  <form class="form-search text-center" id="search-form">
     <div class="input-append">
       <input type="text" class="input-xxlarge search-query" placeholder="Search">
         <button type="submit" class="btn"><i class="icon-search"></i></button>

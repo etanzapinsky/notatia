@@ -9,5 +9,5 @@ urlpatterns = patterns('',
     url(r'^capsule/(?P<capsule_id>\d*)$', views.process_capsule, name='capsule'),
     url(r'^filter/capsules/$', views.filter_capsules, name='filter_capsules'),
     url(r'^author/(?P<username>[\w.@+-]+)$', views.get_author, name='author'),
-    url(r'^search/', include('haystack.urls')),
+    url(r'^search/', views.search, name='search'),
 )

@@ -1,4 +1,5 @@
 {{ object.title }}
 {{ object.user.get_full_name }}
 {{ object.text }}
+{{ object.tags }}
 {{ object.path }}

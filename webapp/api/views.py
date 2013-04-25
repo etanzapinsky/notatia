@@ -2,13 +2,16 @@ import json
 import datetime
 
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
+from django.core import serializers
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.utils.timezone import utc
 from django.db.models import Q
 from django.views.decorators.http import require_http_methods
+from haystack.inputs import Clean
+from haystack.query import SearchQuerySet
 
-from api.models import Capsule, Tag
+from api.models import Capsule
 from utils import MyEncoder, int_or_none, api_login_required
 
 # figure out what the proper error code should be -> look it up in the google
@@ -45,16 +48,13 @@ def get_capsule(request, capsule_id):
 def create_capsule(request):
     # shouldnt have to deal with authors since capsule creation can only be from
     # the user that's logged in
+    # tags are just a string of comma separated values
     query_dict = json.loads(request.body)
-    # have to pop tags so that we can create the capsule using query_dict, but
-    # then we have to be able to add them to the capsule later
-    tags = Tag.objects.filter(name__in=query_dict.pop('tags'))
     try:
         cap = Capsule(**query_dict)
         cap.full_clean()
         cap.save()
         cap.authors.add(request.user)
-        cap.tags.add(*tags)
         return HttpResponse(json.dumps(cap.to_dict(), cls=MyEncoder),
                             content_type="application/json")
     except ValidationError:
@@ -70,12 +70,10 @@ def update_capsule(request, capsule_id):
         query_dict.pop('first_created')
         query_dict.pop('last_modified')
         query_dict.pop('id')
-        tags = Tag.objects.filter(name__in=query_dict.pop('tags'))
         authors = User.objects.filter(username__in=query_dict.pop('authors'))
         cap.update(**query_dict)
         cap = cap[0] # can do this since cap is filtered on pk
         cap.authors.add(*authors)
-        cap.tags.add(*tags)
         return HttpResponse(json.dumps(cap.to_dict(), cls=MyEncoder),
                             content_type="application/json")        
     except ObjectDoesNotExist:
@@ -133,7 +131,7 @@ def filter_capsules(request):
     author_usernames = author_username.split(',') if author_usernames else []
     author_ids = [int_or_none(aid) for aid in author_ids if int_or_none(aid) != None]
     authors = User.objects.filter(Q(pk__in=author_ids) | Q(username__in=author_usernames))
-    tags = query_dict.get('tags', '')
+    # tags = query_dict.get('tags', '')
     title = query_dict.get('title')
     text = query_dict.get('text') # for now this sucks since it has to match exactly
     path = query_dict.get('path')
@@ -147,9 +145,9 @@ def filter_capsules(request):
     capsules = Capsule.objects.all()
     if authors:
         capsules = capsules.filter(authors__in=authors)
-    if tags:
-        tags = tags.split(',')
-        capsules = capsules.filter(tags__name__in=tags)
+    # if tags:
+    #     tags = tags.split(',')
+    #     capsules = capsules.filter(tags__name__in=tags)
     if title:
         capsules = capsules.filter(title=title)
     if text:
@@ -186,3 +184,21 @@ def get_author(request, username):
     user_dict.pop('password')
     return HttpResponse(json.dumps({'data': {'author': user_dict}}, cls=MyEncoder),
                         content_type="application/json")
+
+def search(request):
+    sqs = SearchQuerySet().filter(content=Fuzzy(request.GET['q']))
+    ser = serializers.serialize('json', [x.object for x in sqs])
+    return HttpResponse(ser, content_type="application/json")
+
+# Fuzzifies only for one word
+class Fuzzy(Clean):
+
+    def __init__(self, query_string, **kwargs):
+        super(Fuzzy, self).__init__(query_string, **kwargs)
+
+    def prepare(self, query_obj):
+        # We need a reference to the current ``SearchQuery`` object this
+        # will run against, in case we need backend-specific code.
+        query_string = super(Fuzzy, self).prepare(query_obj)
+
+        return "%s~" % query_string
