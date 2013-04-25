@@ -138,5 +138,5 @@ button {
     height: 100px;
     width: 100px;
     background-color: purple;
-    position: fixed;
+    position: absolute;
 }
