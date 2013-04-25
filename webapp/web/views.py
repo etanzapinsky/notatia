@@ -31,6 +31,9 @@ def image_test(request):
 def capsule_view(request):
     return render(request, 'capsule_view.html')
 
+def main_page(request):
+    return render(request, 'main_page.html')
+
 def create_account(request):
     form = UserCreateForm()
     if request.method == 'POST':
