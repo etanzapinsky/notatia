@@ -1,10 +1,11 @@
 $(document).ready(function() {
     var $container = $('.drawing-container');
     var selection = $('<div>').addClass('selection-box');
+    var click_y, click_x;
 
     $container.on('mousedown', function(e) {
-        var click_y = e.pageY;
-        var click_x = e.pageX;
+        click_y = e.pageY;
+        click_x = e.pageX;
 
         selection.css({
             'top':    click_y,
@@ -30,13 +31,17 @@ $(document).ready(function() {
                 'top': new_y,
                 'left': new_x
             });
-        })
+        });
     }).on('mouseup', function(e) {
         $(this).off('mousemove');
-        var comment = selection.clone().appendTo($(this));
+        var comment = selection.clone();
         comment.addClass('comment-box');
         comment.removeClass('selection-box');
         selection.remove();
+
+        if (e.pageX == click_x && e.pageY == click_y) {
+            return;
+        }
 
         var cap_height = 100
         var cap_width = 100
@@ -54,6 +59,7 @@ $(document).ready(function() {
             'background': 'white'
         });
 
-        cap.appendTo($(this))
+        comment.appendTo($(this));
+        $(this).after(cap);
     });
 }); 
