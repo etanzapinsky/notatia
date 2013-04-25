@@ -28,7 +28,6 @@ $(document).ready(function() {
         if (selection.toString() === '') {
             new_capsule_box.remove();
         }
-
     });
 
     $('.main-capsule-body').bind('mouseup', function(e){

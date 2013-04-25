@@ -43,7 +43,6 @@ var EditCapsule = Backbone.View.extend({
 		el: '.page',
 		render: function(options){
 			var that = this;
-			debugger;
 			if(options.id){
 				//GET REQUEST
 				var capsule = new Capsule({id: options.id});

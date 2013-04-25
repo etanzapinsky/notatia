@@ -20,3 +20,12 @@ class Capsule(models.Model):
         cap.pop('_state')
         return cap
 
+# need this to be down here bc of problem with circular imports #HACK
+from api.search_indexes import CapsuleIndex
+# in general this is not suggested since really slow and can have undue load,
+# but for demo is fine
+# (see: http://django-haystack.readthedocs.org/en/latest/searchindex_api.html#realtimesearchindex) 
+def reindex_capsule(sender, **kwargs):
+    CapsuleIndex().update_object(kwargs['instance'])
+models.signals.post_save.connect(reindex_capsule, sender=Capsule)
+

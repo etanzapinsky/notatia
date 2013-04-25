@@ -4,3 +4,5 @@ Django==1.5.1
 South==0.7.6
 MySQL-Python==1.2.4
 Fabric==1.6.0
+-e git+https://github.com/toastdriven/django-haystack.git@master#egg=django-haystack
+pyelasticsearch==0.5
