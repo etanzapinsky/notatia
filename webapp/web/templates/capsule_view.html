@@ -8,23 +8,26 @@
 {% block content %}
 <div class="container">
   <div class="row-fluid">
-    <div class="span8 scaffold main-capsule">
-      <h1>Main Capsule Title</h1>
+    <div class="span8 capsule" id="main-capsule">
+      <h1 class="title">Main Capsule Title</h1>
       <div class="main-capsule-body">The main <a href="#" class="previewable">capsule</a> would be here. Now let's write some more text to fill out this fake capsule so that I can manipulate it properly. Fundementally, all that the frontend will be doing is manipulating the DOM so that the text will have many bells and wistles associated with it. We should be able to write free form text and add images. For now if someone would to want to add a webpage they would have to copy over the relevant section of the text.</div>
     </div>
-    <div class="span4 scaffold">
-      <h3>Linked Capsules</h3>
+    <div class="span4" id="linked-pane">
+      <h3 class="title">Linked Capsules</h3>
       <form class="form-search text-center">
         <div class="input-append">
           <input type="text" class="input-large search-query">
             <button type="submit" class="btn"><i class="icon-search"></i></button>
           </div>
       </form>
-      <div class="row friend-capsule">I'm a linked Capsule!</div>
-      <div class="row friend-capsule"></div>
-      <div class="row friend-capsule"></div>
-      <div class="row friend-capsule"></div>
-      <div class="row friend-capsule"></div>
+      <div class="friend capsule">I'm a linked Capsule!</div>
+      <div class="friend capsule">
+        <img class="img-rounded pull-right" src="http://i.imgur.com/smAy2ib.jpg" alt="dogs">
+        <h4 class="media-heading">Hey there little buddy</h4>
+      </div>
+      <div class="friend capsule"></div>
+      <div class="friend capsule"></div>
+      <div class="friend capsule"></div>
       <div class="pagination pagination-centered">
         <ul>
           <li class="disabled"><a href="#">&laquo;</a></li>
