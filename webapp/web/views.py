@@ -10,7 +10,7 @@ from api.models import Capsule
 
 def index(request):
     if request.user.is_authenticated():
-        return render(request, 'home_page.html', {'user': request.user.username})
+        return render(request, 'main_page.html', {'user': request.user.username})
     else:
         return render(request, 'landing_page.html')
         
@@ -32,9 +32,6 @@ def image_test(request):
 def capsule_view(request, cap_id):
     cap = Capsule.objects.get(pk=cap_id)
     return render(request, 'capsule_view.html', {'capsule': cap})
-
-def main_page(request):
-    return render(request, 'main_page.html')
 
 def create_account(request):
     form = UserCreateForm()
