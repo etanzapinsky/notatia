@@ -1,3 +1,5 @@
+import json
+
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -7,6 +9,7 @@ from django.conf import settings
 
 from web.forms import UserCreateForm
 from api.models import Capsule
+from utils import MyEncoder
 
 def index(request):
     if request.user.is_authenticated():
@@ -31,7 +34,7 @@ def image_test(request):
 
 def capsule_view(request, cap_id):
     cap = Capsule.objects.get(pk=cap_id)
-    return render(request, 'capsule_view.html', {'capsule': cap})
+    return render(request, 'capsule_view.html', {'capsule': json.dumps(cap.to_dict(), cls=MyEncoder)})
 
 def create_account(request):
     form = UserCreateForm()

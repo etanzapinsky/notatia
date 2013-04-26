@@ -50,12 +50,17 @@ var CapsuleView = Backbone.View.extend({
 var FriendCapsuleView = CapsuleView.extend({
     className: "capsule friend",
     template: _.template('<h4 class="title"><%= title %></h4><p><%= text %></p>')
-})
+});
 
 var StreamCapsuleView = CapsuleView.extend({
     className: "capsule stream",
     template: _.template('<h3 class="title"><%= title %></h3><p><%= text %></p>')
-})
+});
+
+var MainCapsuleView = CapsuleView.extend({
+    className: "span8 capsule",
+    template: _.template('<h1 class="title"><%= title %><button type="submit" class="btn pull-right" id="edit-button">Edit</button></h1><div class="main-capsule-body"><%= text %></div>'),
+});
 
 var ProperCapsuleView;
 

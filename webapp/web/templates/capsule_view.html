@@ -4,15 +4,16 @@
 {% block scripts %}
   <script src="{% static 'js/search.js' %}"></script>
   <script src="{% static 'js/capsule-preview.js' %}"></script>
+  <script>
+    {% autoescape off %}
+    var capsule = new Object({{ capsule }});
+    {% endautoescape %}
+  </script>
 {% endblock %}
 
 {% block content %}
 <div class="container">
-  <div class="row-fluid">
-    <div class="span8 capsule" id="main-capsule">
-      <h1 class="title">{{ capsule.title }}</h1>
-      <div class="main-capsule-body">{{ capsule.text }}</div>
-    </div>
+  <div class="row-fluid" id="main-body">
     <div class="span4 capsule" id="linked-pane">
       <h3 class="title">Linked Capsules</h3>
       <form class="form-search text-center" id="search-form">
@@ -28,9 +29,6 @@
             <h4 class="media-heading">Hey there little buddy</h4>
             <p>This is my text.</p>
           </div>
-          <div class="friend capsule"></div>
-          <div class="friend capsule"></div>
-          <div class="friend capsule"></div>
         </div>
       <div class="pagination pagination-centered">
         <ul>

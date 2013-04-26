@@ -177,3 +177,7 @@ body {
     padding: 0 10px;
     margin-bottom: 20px;
 }
+
+#edit-button {
+    margin-top: 5px;
+}

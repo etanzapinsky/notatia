@@ -1,5 +1,4 @@
 $(document).ready(function() {
-    ProperCapsuleView = FriendCapsuleView;
     var previewable = $('.previewable');
     var preview = $('<div>').addClass('hover-box');
     var new_capsule = $('<div>').addClass('new-capsule-box');
@@ -47,4 +46,9 @@ $(document).ready(function() {
             $(this).after(new_capsule);
         }
     });
+
+    ProperCapsuleView = FriendCapsuleView;
+    var main_capsule = new MainCapsuleView({model: new Capsule(capsule)});
+    $(main_capsule.el).attr('id', 'main-capsule');
+    $('#main-body').prepend(main_capsule.el);
 });
