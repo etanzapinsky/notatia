@@ -31,7 +31,7 @@ var CapsuleView = Backbone.View.extend({
     className: "capsule",
     events: {
       "click": function(e) {
-          window.location.pathname = '/capsule_view/' + this.model.id;
+          window.location.pathname = '/capsule/' + this.model.id;
       },
       // "click .button.edit":   "openEditDialog",
       // "click .button.delete": "destroy"
