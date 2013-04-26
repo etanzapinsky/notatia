@@ -20,6 +20,10 @@ class Capsule(models.Model):
         cap.pop('_state')
         return cap
 
+    def update_nosave(self, *args, **kwargs):
+        for k in kwargs:
+            setattr(self, k, kwargs[k])
+
 # need this to be down here bc of problem with circular imports #HACK
 from api.search_indexes import CapsuleIndex
 # in general this is not suggested since really slow and can have undue load,

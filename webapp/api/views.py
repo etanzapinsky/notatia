@@ -71,7 +71,10 @@ def update_capsule(request, capsule_id):
         query_dict.pop('last_modified')
         query_dict.pop('id')
         authors = User.objects.filter(username__in=query_dict.pop('authors'))
-        cap.update(**query_dict)
+        # will only be one iteration
+        for ca in cap:
+            ca.update_nosave(**query_dict)
+            ca.save()
         cap = cap[0] # can do this since cap is filtered on pk
         cap.authors.add(*authors)
         return HttpResponse(json.dumps(cap.to_dict(), cls=MyEncoder),
@@ -119,7 +122,7 @@ def recent_capsules(request):
     limit = query_dict.get('limit', 10)
     capsules = Capsule.objects.filter(authors=request.user).order_by('-last_modified')[:limit]
     caps = sanitize_capsule_list(capsules)
-    return HttpResponse(json.dumps({'data': caps}, cls=MyEncoder),
+    return HttpResponse(json.dumps(caps, cls=MyEncoder),
                         content_type="application/json")
 
 @api_login_required
@@ -187,7 +190,8 @@ def get_author(request, username):
 
 def search(request):
     sqs = SearchQuerySet().filter(content=Fuzzy(request.GET['q']))
-    ser = serializers.serialize('json', [x.object for x in sqs])
+    res_list = sorted([x for x in sqs], key=lambda x: x.score, reverse=True)
+    ser = serializers.serialize('json', [x.object for x in res_list])
     return HttpResponse(ser, content_type="application/json")
 
 # Fuzzifies only for one word
@@ -201,4 +205,4 @@ class Fuzzy(Clean):
         # will run against, in case we need backend-specific code.
         query_string = super(Fuzzy, self).prepare(query_obj)
 
-        return "%s~" % query_string
+        return "%s~" % query_string if query_string else ""
