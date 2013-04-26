@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect
 from django.conf import settings
 
 from web.forms import UserCreateForm
+from api.models import Capsule
 
 def index(request):
     if request.user.is_authenticated():
@@ -28,8 +29,9 @@ def team(request):
 def image_test(request):
     return render(request, 'image_test.html')
 
-def capsule_view(request):
-    return render(request, 'capsule_view.html')
+def capsule_view(request, cap_id):
+    cap = Capsule.objects.get(pk=cap_id)
+    return render(request, 'capsule_view.html', {'capsule': cap})
 
 def main_page(request):
     return render(request, 'main_page.html')

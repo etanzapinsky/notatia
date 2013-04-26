@@ -18,7 +18,7 @@ urlpatterns = patterns('',
     url(r'^team/$', 'web.views.team', name = 'team'),
     url(r'^faq/$', 'web.views.faq', name = 'faq'),
     url(r'^image_test/$', 'web.views.image_test', name='image_test'),
-    url(r'^capsule_view/$', 'web.views.capsule_view', name='capsule_view'),
+    url(r'^capsule_view/(\d+)$', 'web.views.capsule_view', name='capsule_view'),
     url(r'main_page/$', 'web.views.main_page', name='main_page'),
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),

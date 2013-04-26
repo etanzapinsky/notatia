@@ -29,11 +29,13 @@ var Capsule = Backbone.Model.extend({
 var CapsuleView = Backbone.View.extend({
     tagName: "div",
     className: "stream capsule",
-    // events: {
-    //   "click .icon":          "open",
-    //   "click .button.edit":   "openEditDialog",
-    //   "click .button.delete": "destroy"
-    // },
+    events: {
+      "click": function(e) {
+          window.location.pathname = '/capsule_view/' + this.model.id;
+      },
+      // "click .button.edit":   "openEditDialog",
+      // "click .button.delete": "destroy"
+    },
     initialize: function() {
         this.listenTo(this.model, "change", this.render);
         this.render();
