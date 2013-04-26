@@ -30,9 +30,14 @@ var CapsuleView = Backbone.View.extend({
     tagName: "div",
     className: "capsule",
     events: {
-      "click": function(e) {
-          window.location.pathname = '/capsule/' + this.model.id;
-      },
+        "click": function(e) {
+            if (this.el.className.indexOf('friend') > -1 || this.el.className.indexOf('stream') > -1) {
+                window.location.pathname = '/capsule/' + this.model.id;
+            }
+            else {
+                e.preventDefault();
+            }
+        },
       // "click .button.edit":   "openEditDialog",
       // "click .button.delete": "destroy"
     },
@@ -59,7 +64,7 @@ var StreamCapsuleView = CapsuleView.extend({
 
 var MainCapsuleView = CapsuleView.extend({
     className: "span8 capsule",
-    template: _.template('<h1 class="title"><%= title %><button type="submit" class="btn pull-right" id="edit-button">Edit</button></h1><div class="main-capsule-body"><%= text %></div>'),
+    template: _.template('<h1 class="title"><%= title %><button class="btn pull-right" id="edit-button">Edit</button></h1><div class="main-capsule-body"><%= text %></div>'),
 });
 
 var ProperCapsuleView;
