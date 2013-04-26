@@ -130,6 +130,7 @@ body {
     margin: 0 0 10px 0;
     cursor: hand;
     cursor: pointer;
+    padding: 0 10px;
 }
 
 .main-capsule-body {

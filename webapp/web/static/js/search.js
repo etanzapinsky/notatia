@@ -28,7 +28,7 @@ var Capsule = Backbone.Model.extend({
 
 var CapsuleView = Backbone.View.extend({
     tagName: "div",
-    className: "stream capsule",
+    className: "capsule",
     events: {
       "click": function(e) {
           window.location.pathname = '/capsule_view/' + this.model.id;
@@ -40,39 +40,27 @@ var CapsuleView = Backbone.View.extend({
         this.listenTo(this.model, "change", this.render);
         this.render();
     },
-    template: _.template('<h3 class="title"><%= title %></h3>'),
+    template: _.template('<h3 class="title"><%= title %></h3><p><%= text %></p>'),
     render: function() {
         this.$el.html(this.template(this.model.attributes));
         return this;
     }
 });
 
+var FriendCapsuleView = CapsuleView.extend({
+    className: "capsule friend",
+    template: _.template('<h4 class="title"><%= title %></h4><p><%= text %></p>')
+})
+
+var StreamCapsuleView = CapsuleView.extend({
+    className: "capsule stream",
+    template: _.template('<h3 class="title"><%= title %></h3><p><%= text %></p>')
+})
+
+var ProperCapsuleView;
+
 var l; // for debugging
 $(document).ready(function(e) {
-    var caps = [];
-    $.ajax({
-        url: '/api/recent_capsules/',
-        success: function(data, status, jqXHR) {
-            for (var i = 0; i < data.length; i++) {
-                var cap = new Capsule(data[i]);
-                var view = new CapsuleView({model: cap});
-                $(view.el).appendTo($('#main-stream'));
-                caps.push(cap); 
-            }
-            l = data;
-            console.log(data);
-            if ($('#main-stream').children().length == 0) {
-                $('#load-more').hide();
-            }
-            else {
-                $('#load-more').show();
-            }
-        },
-        error: function(jqXHR, status, error) {
-            console.log(error);
-        }
-    });    
-    
     $('#search-form').submit(function(e) {
         e.preventDefault();
         $.ajax({
@@ -83,42 +71,12 @@ $(document).ready(function(e) {
                 caps = []
                 var res = sanitize_list(data);
                 for (var i = 0; i < res.length; i++) {
-                    var view = new CapsuleView({model: res[i]});
+                    var view = new ProperCapsuleView({model: res[i]});
                     $(view.el).appendTo($('#main-stream'));
                 }
                 l = res;
                 caps = res;
                 console.log(res);
-                if ($('#main-stream').children().length == 0) {
-                    $('#load-more').hide();
-                }
-                else {
-                    $('#load-more').show();
-                }
-            },
-            error: function(jqXHR, status, error) {
-                console.log(error);
-            }
-        });
-    });
-
-    // currently doesn't work, using a bad method
-    $('#load-more').click(function(e) {
-        e.preventDefault();
-        $.ajax({
-            url: '/api/recent_capsules/',
-            data: {'to_time': caps[caps.length-1].attributes.last_modified},
-            success: function(data, status, jqXHR) {
-                for (var i = 0; i < data.length; i++) {
-                    var cap = new Capsule(data[i]);
-                    var view = new CapsuleView({model: cap});
-                    $(view.el).appendTo($('#main-stream'));
-                    caps.push(cap); 
-                }
-                console.log(data);
-                if (data.length == 0) {
-                    $('#load-more').hide();
-                }
             },
             error: function(jqXHR, status, error) {
                 console.log(error);

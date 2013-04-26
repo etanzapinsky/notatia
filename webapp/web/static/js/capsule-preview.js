@@ -1,4 +1,5 @@
 $(document).ready(function() {
+    ProperCapsuleView = FriendCapsuleView;
     var previewable = $('.previewable');
     var preview = $('<div>').addClass('hover-box');
     var new_capsule = $('<div>').addClass('new-capsule-box');
