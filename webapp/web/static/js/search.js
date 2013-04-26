@@ -49,15 +49,46 @@ var CapsuleView = Backbone.View.extend({
 
 var l; // for debugging
 $(document).ready(function(e) {
+    var caps = [];
+    $.ajax({
+        url: '/api/recent_capsules/',
+        success: function(data, status, jqXHR) {
+            for (var i = 0; i < data.length; i++) {
+                var cap = new Capsule(data[i]);
+                var view = new CapsuleView({model: cap});
+                $(view.el).appendTo($('#main-stream'));
+                caps.push(cap); 
+            }
+            l = data;
+            console.log(data);
+            if ($('#main-stream').children().length == 0) {
+                $('#load-more').hide();
+            }
+            else {
+                $('#load-more').show();
+            }
+        },
+        error: function(jqXHR, status, error) {
+            console.log(error);
+        }
+    });    
+    
+    $('#search-form').submit(function(e) {
+        e.preventDefault();
         $.ajax({
-            url: '/api/recent_capsules/',
+            url: '/api/search/',
+            data: {'q': $("input:first").val()},
             success: function(data, status, jqXHR) {
-                for (var i = 0; i < data.length; i++) {
-                    var view = new CapsuleView({model: new Capsule(data[i])});
+                $('#main-stream').children().remove();
+                caps = []
+                var res = sanitize_list(data);
+                for (var i = 0; i < res.length; i++) {
+                    var view = new CapsuleView({model: res[i]});
                     $(view.el).appendTo($('#main-stream'));
                 }
-                l = data;
-                console.log(data);
+                l = res;
+                caps = res;
+                console.log(res);
                 if ($('#main-stream').children().length == 0) {
                     $('#load-more').hide();
                 }
@@ -68,27 +99,25 @@ $(document).ready(function(e) {
             error: function(jqXHR, status, error) {
                 console.log(error);
             }
-        });    
-    
-    $('#search-form').submit(function(e) {
+        });
+    });
+
+    // currently doesn't work, using a bad method
+    $('#load-more').click(function(e) {
         e.preventDefault();
         $.ajax({
-            url: '/api/search/',
-            data: {'q': $("input:first").val()},
+            url: '/api/recent_capsules/',
+            data: {'to_time': caps[caps.length-1].attributes.last_modified},
             success: function(data, status, jqXHR) {
-                $('#main-stream').children().remove();
-                var res = sanitize_list(data);
-                for (var i = 0; i < res.length; i++) {
-                    var view = new CapsuleView({model: res[i]});
+                for (var i = 0; i < data.length; i++) {
+                    var cap = new Capsule(data[i]);
+                    var view = new CapsuleView({model: cap});
                     $(view.el).appendTo($('#main-stream'));
+                    caps.push(cap); 
                 }
-                l = res;
-                console.log(res);
-                if ($('#main-stream').children().length == 0) {
+                console.log(data);
+                if (data.length == 0) {
                     $('#load-more').hide();
-                }
-                else {
-                    $('#load-more').show();
                 }
             },
             error: function(jqXHR, status, error) {
