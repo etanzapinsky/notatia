@@ -185,6 +185,10 @@ body {
     margin-bottom: 5px;
 }
 
+h4 button {
+    margin-top: -5px;
+}
+
 textarea {
     max-height: 500px;
     height: 500px;

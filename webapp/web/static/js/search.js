@@ -54,7 +54,7 @@ var CapsuleView = Backbone.View.extend({
 
 var FriendCapsuleView = CapsuleView.extend({
     className: "capsule friend",
-    template: _.template('<h4 class="title"><%= title %></h4><p><%= text %></p>')
+    template: _.template('<h4 class="title"><%= title %><button class="btn btn-success pull-right">Link</button></h4><p><%= text %></p>')
 });
 
 var StreamCapsuleView = CapsuleView.extend({
@@ -109,7 +109,10 @@ $(document).ready(function(e) {
         e.preventDefault();
         $.ajax({
             url: '/api/search/',
-            data: {'q': $("input:first").val()},
+            data: {
+                'q': $("input:first").val(),
+                'id': window.capsule ? window.capsule.id : null,
+            },
             success: function(data, status, jqXHR) {
                 $('#main-stream').children().remove();
                 caps = []
