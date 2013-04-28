@@ -33,3 +33,5 @@ def reindex_capsule(sender, **kwargs):
     CapsuleIndex().update_object(kwargs['instance'])
 models.signals.post_save.connect(reindex_capsule, sender=Capsule)
 
+class Link(models.Model):
+    capsule = models.ForiegnKey()
