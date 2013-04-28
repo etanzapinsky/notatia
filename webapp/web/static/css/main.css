@@ -178,6 +178,20 @@ body {
     margin-bottom: 20px;
 }
 
-#edit-button {
+.top-button {
     margin-top: 5px;
+}
+.bottom-button {
+    margin-bottom: 5px;
+}
+
+textarea {
+    max-height: 500px;
+    height: 500px;
+    max-width: 98%;
+    width: 98%;
+}
+
+.title input {
+    font-size: 38.5px;
 }

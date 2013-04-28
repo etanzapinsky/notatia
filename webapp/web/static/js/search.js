@@ -64,9 +64,9 @@ var StreamCapsuleView = CapsuleView.extend({
 
 var MainCapsuleView = CapsuleView.extend({
     className: "span8 capsule",
-    template: _.template('<h1 class="title"><%= title %><button class="btn pull-right" id="edit-button">Edit</button></h1><div class="main-capsule-body"><%= text %></div>'),
+    template: _.template('<h1 class="title"><%= title %><button class="btn pull-right top-button" id="edit-button">Edit</button></h1><div class="main-capsule-body"><%= text %></div>'),
     events: {
-        "mouseup": function(e) {
+        "mouseup div": function(e) {
             var selection;
             var new_capsule = $('<div>').addClass('alert new-capsule-box fade in');
             var x = $('<button>').addClass('close').attr('data-dismiss', 'alert').html('&times;');
@@ -84,6 +84,19 @@ var MainCapsuleView = CapsuleView.extend({
                 })
                 $(this.el).after(new_capsule);
             }
+        },
+        "click #edit-button": function(e) {
+            e.preventDefault();
+            this.original_template = this.template;
+            this.template = _.template('<h1 class="title"><input id="title-input" class="input-xxlarge" value="<%= title %>"</input><button type="submit" class="btn btn-danger pull-right top-button">Delete</button></h1><textarea id="text-input" class="main-capsule-body"><%= text %></textarea><button class="btn btn-primary pull-right bottom-button" id="save-button">Save</button>');
+            this.render();
+        },
+        "click #save-button": function(e) {
+            e.preventDefault();
+            this.model.attributes.title = this.$('#title-input').val();
+            this.model.attributes.text = this.$('#text-input').val();
+            this.model.save();
+            this.template = this.original_template;
         }
     }
 });
