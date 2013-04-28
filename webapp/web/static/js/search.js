@@ -15,6 +15,11 @@ function sanitize_list(search_list) {
     return res;
 }
 
+function redirect(e) {
+    if (this.el.className.indexOf('friend') > -1 || this.el.className.indexOf('stream') > -1) {
+        window.location.pathname = '/capsule/' + this.model.id;
+    }    
+}
 
 var Capsule = Backbone.Model.extend({
     urlRoot: '/api/capsule/',
@@ -30,16 +35,7 @@ var CapsuleView = Backbone.View.extend({
     tagName: "div",
     className: "capsule",
     events: {
-        "click": function(e) {
-            if (this.el.className.indexOf('friend') > -1 || this.el.className.indexOf('stream') > -1) {
-                window.location.pathname = '/capsule/' + this.model.id;
-            }
-            // else {
-            //     // e.preventDefault();
-            // }
-        },
-      // "click .button.edit":   "openEditDialog",
-      // "click .button.delete": "destroy"
+        "click": redirect
     },
     initialize: function() {
         this.listenTo(this.model, "change", this.render);
@@ -54,7 +50,29 @@ var CapsuleView = Backbone.View.extend({
 
 var FriendCapsuleView = CapsuleView.extend({
     className: "capsule friend",
-    template: _.template('<h4 class="title"><%= title %><button class="btn btn-success pull-right">Link</button></h4><p><%= text %></p>')
+    template: _.template('<h4 class="title"><span><%= title %></span><button class="btn btn-success pull-right link">Link</button></h4><p><%= text %></p>'),
+    events: $.extend(this.events, {
+        "click button.link": function(e) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            $.ajax({
+                type: 'POST',
+                url: '/api/link/' + window.capsule.id + '/' + this.model.id,
+                data: {},
+                success: function(data, status, jqXHR) {
+                    // this.original_template = this.template;
+                    // this.template = _.template('<h4 class="title"><span><%= title %></span><button class="btn btn-danger pull-right link">Unlink</button></h4><p><%= text %></p>');
+                    // debugger;
+                    // this.render();
+                    console.log(data);
+                },
+                error: function(jqXHR, status, error) {
+                    console.log(error);
+                }
+            });
+        },
+        "click": redirect
+    })
 });
 
 var StreamCapsuleView = CapsuleView.extend({

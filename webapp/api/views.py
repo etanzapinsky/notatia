@@ -11,7 +11,7 @@ from django.views.decorators.http import require_http_methods
 from haystack.inputs import Clean
 from haystack.query import SearchQuerySet
 
-from api.models import Capsule
+from api.models import Capsule, Link
 from utils import MyEncoder, int_or_none, api_login_required
 
 # figure out what the proper error code should be -> look it up in the google
@@ -193,8 +193,24 @@ def get_author(request, username):
     return HttpResponse(json.dumps({'data': {'author': user_dict}}, cls=MyEncoder),
                         content_type="application/json")
 
+@api_login_required
+@require_http_methods(["POST"])
+def link(request, from_id, to_id):
+    from_cap = Capsule.objects.get(pk=from_id)
+    to_cap = Capsule.objects.get(pk=to_id)
+    link = Link(capsule=to_cap, **request.POST)
+    if not Capsule.objects.filter(pk=from_cap.pk, links__capsule=to_cap):
+        link.save()
+        from_cap.links.add(link)
+        return HttpResponse(json.dumps({'data': 'success'}),
+                            content_type="application/json")
+    return HttpResponse(json.dumps({'data': 'link already exists'}),
+                        content_type='application/json')
+
 def search(request):
     sqs = SearchQuerySet().filter(content=Fuzzy(request.GET['q']))
+    if request.GET['id'] != '':
+        sqs = sqs.exclude(django_id=int(request.GET['id']))
     res_list = sorted([x for x in sqs], key=lambda x: x.score, reverse=True)
     ser = serializers.serialize('json', [x.object for x in res_list])
     return HttpResponse(ser, content_type="application/json")

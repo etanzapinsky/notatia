@@ -12,6 +12,7 @@ class Capsule(models.Model):
     path = models.CharField(max_length=1024, blank=True) # the 1024 max length may cause issues later
     last_modified = models.DateTimeField(auto_now=True)
     first_created = models.DateTimeField(auto_now_add=True)
+    links = models.ManyToManyField('Link', related_name='capsule_links')
 
     def to_dict(self):
         cap = self.__dict__
@@ -34,4 +35,8 @@ def reindex_capsule(sender, **kwargs):
 models.signals.post_save.connect(reindex_capsule, sender=Capsule)
 
 class Link(models.Model):
-    capsule = models.ForiegnKey()
+    capsule = models.ForeignKey(Capsule)
+    top = models.SmallIntegerField(default=None, null=True)
+    left = models.SmallIntegerField(default=None, null=True)
+    width = models.SmallIntegerField(default=None, null=True)
+    height = models.SmallIntegerField(default=None, null=True)
