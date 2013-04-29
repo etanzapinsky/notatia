@@ -56,6 +56,9 @@ var CapsuleView = Backbone.View.extend({
 var linked_template = _.template('<h4 class="title"><span><%= title %></span><button class="btn btn-danger pull-right link">Unlink</button></h4><p><%= text %></p>');
 var unlinked_template = _.template('<h4 class="title"><span><%= title %></span><button class="btn btn-success pull-right link">Link</button></h4><p><%= text %></p>');
 
+var popup_edit_template = _.template('<p class="underline"><input class="input-large" type="text" id="popup-title" value="<%= title %>"</input><button class="close" data-dimiss="alert">&times;</button></p><textarea id="popup-textarea"><%= text %></textarea><button class="btn btn-primary pull-right bottom-button" id="save-button">Save</button>');
+var popup_view_template = _.template('<h4 class="title"><span><%= title %></span><button class="close pull-right popup-view-close" data-dimiss="alert">&times;</button><button class="btn pull-right link" id="edit-button">Edit</button></h4><p><%= text %></p>');
+
 var FriendCapsuleView = CapsuleView.extend({
     className: "capsule friend",
     template: unlinked_template,
@@ -107,8 +110,8 @@ var StreamCapsuleView = CapsuleView.extend({
 });
 
 var PopupCapsuleView = CapsuleView.extend({
-    className: 'alert new-capsule-box capsule fade in',
-    template: _.template('<p class="underline"><input class="input-large" type="text" value="<%= title %>"</input><button class="close" data-dimiss="alert">&times;</button></p><textarea id="popup-textarea"><%= text %></textarea><button class="btn btn-primary pull-right bottom-button" id="save-button">Save</button>'),
+    className: 'new-capsule-box capsule fade in',
+    template: popup_edit_template,
     events: {
         "click .close": function(e) {
             e.preventDefault();
@@ -116,6 +119,23 @@ var PopupCapsuleView = CapsuleView.extend({
             $('span.selection').contents().unwrap();
             $('span.selection').remove();
             $('#main-capsule-body').text($('#main-capsule-body').text());
+        },
+        "click #save-button": function(e) {
+            e.preventDefault();
+            this.model.attributes.title = this.$('#popup-title').val();
+            this.model.attributes.text = this.$('#popup-textarea').val();
+            self = this;
+            this.model.save({}, {
+                success: function(model, response, options) {
+                    self.template = popup_view_template;
+                    self.render();
+                }
+            });
+        },
+        "click #edit-button": function(e) {
+            e.preventDefault();
+            this.template = popup_edit_template;
+            this.render();
         }
     }
 })

@@ -120,6 +120,7 @@ body {
 .title {
     border-bottom: 1px solid #DDD;
     padding-bottom: 10px;
+    color: #333;
 }
 
 .underline {
@@ -172,6 +173,7 @@ body {
     /* background-color: purple; */
     position: absolute;
     z-index: 1;
+    padding: 8px 14px;
 }
 
 .stream {
@@ -234,4 +236,8 @@ h4 button {
 .friend span {
     width: 100%;
     height: 100%;
+}
+
+.popup-view-close {
+    margin-left: 5px;
 }
