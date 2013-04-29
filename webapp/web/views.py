@@ -38,6 +38,9 @@ def capsule_view(request, cap_id):
     return render(request, 'capsule_view.html',
                   {'capsule': serialize(cap)})
 
+def capsule_create(request):
+    return render(request, 'capsule_view.html', {'capsule': None})
+
 def create_account(request):
     form = UserCreateForm()
     if request.method == 'POST':

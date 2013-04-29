@@ -11,9 +11,18 @@ $(document).ready(function() {
     });
 
     ProperCapsuleView = FriendCapsuleView;
-    var main_capsule = new MainCapsuleView({model: capsule});
-    $(main_capsule.el).attr('id', 'main-capsule');
-    $('#main-body').prepend(main_capsule.el);
+    if (capsule) {
+        var main_capsule = new MainCapsuleView({model: capsule});
+        $(main_capsule.el).attr('id', 'main-capsule');
+        $('#main-body').prepend(main_capsule.el);
+    }
+    else {
+        var main_capsule = new MainCapsuleView({model: new Capsule()});
+        main_capsule.template = main_capsule.edit_template;
+        main_capsule.render();
+        $(main_capsule.el).attr('id', 'main-capsule');
+        $('#main-body').prepend(main_capsule.el);
+    }
 
     var link_ids = capsule.attributes.links;
     for (var i = 0; i < link_ids.length; i++) {

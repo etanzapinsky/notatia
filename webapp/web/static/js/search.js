@@ -151,9 +151,14 @@ var PopupCapsuleView = CapsuleView.extend({
     }
 })
 
+var view_template = _.template('<h1 class="title"><%= title %><button class="btn pull-right top-button" id="edit-button">Edit</button></h1><div id="main-capsule-body"><%= text %></div>');
+var edit_template = _.template('<h1 class="title"><input id="title-input" class="input-xxlarge" value="<%= title %>"</input><button type="submit" class="btn btn-danger pull-right top-button" id="delete-button" data-toggle="modal" href="#are-you-sure">Delete</button></h1><textarea id="text-input" id="main-capsule-body"><%= text %></textarea><button class="btn btn-primary pull-right bottom-button" id="save-button">Save</button>');
+
 var MainCapsuleView = CapsuleView.extend({
     className: "span8 capsule",
-    template: _.template('<h1 class="title"><%= title %><button class="btn pull-right top-button" id="edit-button">Edit</button></h1><div id="main-capsule-body"><%= text %></div>'),
+    template: view_template,
+    view_template: view_template,
+    edit_template: edit_template,
     events: {
         "mouseup div": function(e) {
             var selection;
@@ -183,16 +188,24 @@ var MainCapsuleView = CapsuleView.extend({
         },
         "click #edit-button": function(e) {
             e.preventDefault();
-            this.original_template = this.template;
-            this.template = _.template('<h1 class="title"><input id="title-input" class="input-xxlarge" value="<%= title %>"</input><button type="submit" class="btn btn-danger pull-right top-button" id="delete-button" data-toggle="modal" href="#are-you-sure">Delete</button></h1><textarea id="text-input" id="main-capsule-body"><%= text %></textarea><button class="btn btn-primary pull-right bottom-button" id="save-button">Save</button>');
+            this.template = this.edit_template;
             this.render();
         },
         "click #save-button": function(e) {
             e.preventDefault();
             this.model.attributes.title = this.$('#title-input').val();
             this.model.attributes.text = this.$('#text-input').val();
-            this.model.save();
-            this.template = this.original_template;
+            if (this.model.id) {
+                this.model.save();
+                this.template = this.view_template;
+            }
+            else {
+                this.model.save({}, {
+                    success: function(model, response, options) {
+                        window.location.pathname = '/capsule/' + model.id;
+                    }
+                });
+            }
         }
     }
 });
