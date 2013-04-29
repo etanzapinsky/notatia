@@ -11,7 +11,7 @@ $(document).ready(function() {
     });
 
     ProperCapsuleView = FriendCapsuleView;
-    var main_capsule = new MainCapsuleView({model: new Capsule(capsule)});
+    var main_capsule = new MainCapsuleView({model: capsule});
     $(main_capsule.el).attr('id', 'main-capsule');
     $('#main-body').prepend(main_capsule.el);
 });

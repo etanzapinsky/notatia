@@ -25,6 +25,14 @@ def sanitize_capsule_list(capsules):
         cap.pop('_state')
     return caps
 
+def serialize(obj):
+    json_string = serializers.serialize('json', [obj])
+    data = json.loads(json_string)
+    res = {'id': data[0]['pk']}
+    for k, v in data[0]['fields'].iteritems():
+        res[k] = v
+    return json.dumps(res)
+
 # all the api functions should have an @login_required, but they shouldn't
 # redirect to the default 404 page since that would suck for someone using the
 # api, they should go to a custom 404 which returns a JSON "endpoint does not
@@ -35,8 +43,7 @@ def index(request):
 def get_capsule(request, capsule_id):
     try:
         cap = Capsule.objects.get(pk=capsule_id)
-        return HttpResponse(json.dumps(cap.to_dict(), cls=MyEncoder),
-                            content_type="application/json")
+        return HttpResponse(serialize(cap), content_type="application/json")
     except ObjectDoesNotExist:
         return HttpResponse(json.dumps({'error':
                                            {'message': 'Capsule Does Not Exist',
@@ -55,8 +62,7 @@ def create_capsule(request):
         cap.full_clean()
         cap.save()
         cap.authors.add(request.user)
-        return HttpResponse(json.dumps(cap.to_dict(), cls=MyEncoder),
-                            content_type="application/json")
+        return HttpResponse(serialize(cap), content_type="application/json")
     except ValidationError:
         response_data['code'] = 500
         return HttpResponse(json.dumps({'data': response_data}),
@@ -77,8 +83,7 @@ def update_capsule(request, capsule_id):
             ca.save()
         cap = cap[0] # can do this since cap is filtered on pk
         cap.authors.add(*authors)
-        return HttpResponse(json.dumps(cap.to_dict(), cls=MyEncoder),
-                            content_type="application/json")        
+        return HttpResponse(serialize(cap), content_type="application/json")
     except ObjectDoesNotExist:
         return HttpResponse(json.dumps({'error':
                                            {'message': 'Capsule Does Not Exist',

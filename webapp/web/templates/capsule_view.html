@@ -6,7 +6,7 @@
   <script src="{% static 'js/capsule-preview.js' %}"></script>
   <script>
     {% autoescape off %}
-    var capsule = new Object({{ capsule }});
+    var capsule = sanitize(new Object({{ capsule }})[0]);
     {% endautoescape %}
   </script>
 {% endblock %}

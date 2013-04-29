@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.conf import settings
+from django.core import serializers
 
 from web.forms import UserCreateForm
 from api.models import Capsule
@@ -33,8 +34,9 @@ def image_test(request):
     return render(request, 'image_test.html')
 
 def capsule_view(request, cap_id):
-    cap = Capsule.objects.get(pk=cap_id)
-    return render(request, 'capsule_view.html', {'capsule': json.dumps(cap.to_dict(), cls=MyEncoder)})
+    cap = Capsule.objects.filter(pk=cap_id)
+    return render(request, 'capsule_view.html',
+                  {'capsule': serializers.serialize('json', cap)})
 
 def create_account(request):
     form = UserCreateForm()

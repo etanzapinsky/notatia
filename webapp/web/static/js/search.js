@@ -28,9 +28,10 @@ var Capsule = Backbone.Model.extend({
         text: '',
         path: '',
         tags: ''
-    }
+    },
 });
 
+// fetch is currently f-ed up
 var CapsuleView = Backbone.View.extend({
     tagName: "div",
     className: "capsule",
