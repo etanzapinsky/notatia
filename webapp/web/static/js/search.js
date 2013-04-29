@@ -106,33 +106,49 @@ var StreamCapsuleView = CapsuleView.extend({
     template: _.template('<h3 class="title"><%= title %></h3><p><%= text %></p>')
 });
 
+var PopupCapsuleView = CapsuleView.extend({
+    className: 'alert new-capsule-box capsule fade in',
+    template: _.template('<p class="underline"><input class="input-large" type="text" value="<%= title %>"</input><button class="close" data-dimiss="alert">&times;</button></p><textarea id="popup-textarea"><%= text %></textarea><button class="btn btn-primary pull-right bottom-button" id="save-button">Save</button>'),
+    events: {
+        "click .close": function(e) {
+            e.preventDefault();
+            this.$el.remove();
+            $('span.selection').contents().unwrap();
+            $('span.selection').remove();
+            $('#main-capsule-body').text($('#main-capsule-body').text());
+        }
+    }
+})
+
 var MainCapsuleView = CapsuleView.extend({
     className: "span8 capsule",
-    template: _.template('<h1 class="title"><%= title %><button class="btn pull-right top-button" id="edit-button">Edit</button></h1><div class="main-capsule-body"><%= text %></div>'),
+    template: _.template('<h1 class="title"><%= title %><button class="btn pull-right top-button" id="edit-button">Edit</button></h1><div id="main-capsule-body"><%= text %></div>'),
     events: {
         "mouseup div": function(e) {
             var selection;
-            var new_capsule = $('<div>').addClass('alert new-capsule-box fade in');
-            var x = $('<button>').addClass('close').attr('data-dismiss', 'alert').html('&times;');
-            x.appendTo(new_capsule);
+            var new_capsule = new PopupCapsuleView({model: new Capsule()});
 
+            // NOTE: this only works moving forward in the text
             if (window.getSelection) {
                 selection = window.getSelection();
-            } else if (document.selection) {
-                selection = document.selection.createRange();
-            }
-            if (selection.toString() !== '') {
-                new_capsule.css({
-                    'top': e.pageY,
-                    'left': e.pageX
-                })
-                $(this.el).after(new_capsule);
+                if (selection.toString() !== '') {
+                    new_capsule.$el.css({
+                        'top': e.pageY,
+                        'left': e.pageX
+                    })
+                    $(this.el).after(new_capsule.el);
+                }
+                var text = selection.baseNode.textContent;
+                var new_html = $('<span class="selection">' + text.slice(selection.baseOffset, selection.extentOffset) + '</span>')[0];
+                var r = selection.getRangeAt();
+                r.deleteContents();
+                r.insertNode(new_html);
             }
         },
         "click #edit-button": function(e) {
             e.preventDefault();
             this.original_template = this.template;
-            this.template = _.template('<h1 class="title"><input id="title-input" class="input-xxlarge" value="<%= title %>"</input><button type="submit" class="btn btn-danger pull-right top-button" id="delete-button" data-toggle="modal" href="#are-you-sure">Delete</button></h1><textarea id="text-input" class="main-capsule-body"><%= text %></textarea><button class="btn btn-primary pull-right bottom-button" id="save-button">Save</button>');
+            this.template = _.template('<h1 class="title"><input id="title-input" class="input-xxlarge" value="<%= title %>"</input><button type="submit" class="btn btn-danger pull-right top-button" id="delete-button" data-toggle="modal" href="#are-you-sure">Delete</button></h1><textarea id="text-input" id="main-capsule-body"><%= text %></textarea><button class="btn btn-primary pull-right bottom-button" id="save-button">Save</button>');
             this.render();
         },
         "click #save-button": function(e) {

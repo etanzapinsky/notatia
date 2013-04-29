@@ -93,6 +93,10 @@ body {
     border-radius: 5px;
 }
 
+.selection {
+    background-color: #B3D4FD;
+}
+
 .comment-box {
     position: absolute;
     border: 2px solid #65909A;
@@ -118,6 +122,11 @@ body {
     padding-bottom: 10px;
 }
 
+.underline {
+    border-bottom: 1px solid #DDD;
+    padding-bottom: 0;
+}
+
 .capsule {
     position: relative;
     border: 1px solid #DDD;
@@ -126,7 +135,7 @@ body {
     background-color: #FFF;
 }
 
-.capsule p {
+.stream p {
     position: relative;
     height: 125px;
     overflow: hidden;
@@ -141,7 +150,7 @@ body {
     padding: 0 10px;
 }
 
-.main-capsule-body {
+#main-capsule-body {
     min-height: 90%;
     position: relative;
 }
@@ -158,10 +167,11 @@ body {
 }
 
 .new-capsule-box {
-    height: 100px;
-    width: 100px;
-    background-color: purple;
+    height: 300px;
+    width: 300px;
+    /* background-color: purple; */
     position: absolute;
+    z-index: 1;
 }
 
 .stream {
@@ -197,15 +207,23 @@ h4 button {
     margin-top: -5px;
 }
 
-textarea {
+#text-input {
     max-height: 500px;
     height: 500px;
     max-width: 98%;
     width: 98%;
 }
 
-.title input {
+#title-input {
     font-size: 38.5px;
+}
+
+#popup-textarea {
+    max-height: 200px;
+    height: 200px;
+    max-width: 96%;
+    width: 96%;
+    
 }
 
 .friend p {
