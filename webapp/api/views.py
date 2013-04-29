@@ -89,6 +89,7 @@ def delete_capsule(request, capsule_id):
     try:
         cap = Capsule.objects.get(pk=capsule_id)
         cap.delete()
+        return HttpResponse(json.dumps({'data': 'success'}))
     except ObjectDoesNotExist:
         return HttpResponse(json.dumps({'error':
                                            {'message': 'Capsule Does Not Exist',

@@ -32,7 +32,10 @@ from api.search_indexes import CapsuleIndex
 # (see: http://django-haystack.readthedocs.org/en/latest/searchindex_api.html#realtimesearchindex) 
 def reindex_capsule(sender, **kwargs):
     CapsuleIndex().update_object(kwargs['instance'])
+def remove_capsule(sender, **kwargs):
+    CapsuleIndex().remove_object(kwargs['instance'])
 models.signals.post_save.connect(reindex_capsule, sender=Capsule)
+models.signals.post_delete.connect(remove_capsule, sender=Capsule)
 
 class Link(models.Model):
     capsule = models.ForeignKey(Capsule)

@@ -132,7 +132,7 @@ var MainCapsuleView = CapsuleView.extend({
         "click #edit-button": function(e) {
             e.preventDefault();
             this.original_template = this.template;
-            this.template = _.template('<h1 class="title"><input id="title-input" class="input-xxlarge" value="<%= title %>"</input><button type="submit" class="btn btn-danger pull-right top-button">Delete</button></h1><textarea id="text-input" class="main-capsule-body"><%= text %></textarea><button class="btn btn-primary pull-right bottom-button" id="save-button">Save</button>');
+            this.template = _.template('<h1 class="title"><input id="title-input" class="input-xxlarge" value="<%= title %>"</input><button type="submit" class="btn btn-danger pull-right top-button" id="delete-button" data-toggle="modal" href="#are-you-sure">Delete</button></h1><textarea id="text-input" class="main-capsule-body"><%= text %></textarea><button class="btn btn-primary pull-right bottom-button" id="save-button">Save</button>');
             this.render();
         },
         "click #save-button": function(e) {

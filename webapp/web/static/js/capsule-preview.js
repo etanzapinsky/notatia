@@ -44,4 +44,13 @@ $(document).ready(function() {
             }
         });
     }
+
+    $('#delete-confirm').click(function(e) {
+        e.preventDefault();
+        capsule.destroy({
+            success: function(model, response) {
+                window.location.pathname = '/';
+            }
+        });
+    });
 });
