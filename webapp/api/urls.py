@@ -10,5 +10,6 @@ urlpatterns = patterns('',
     url(r'^filter/capsules/$', views.filter_capsules, name='filter_capsules'),
     url(r'^author/(?P<username>[\w.@+-]+)$', views.get_author, name='author'),
     url(r'^search/', views.search, name='search'),
-    url(r'link/(?P<from_id>\d+)/(?P<to_id>\d+)', views.link, name='link'),
+    url(r'link/(?P<from_id>\d+)/(?P<to_id>\d+)$', views.create_link, name='create_link'),
+    url(r'link/(?P<pk>\d+)$', views.get_link, name='get_link'),
 )

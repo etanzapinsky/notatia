@@ -12,7 +12,7 @@ from haystack.inputs import Clean
 from haystack.query import SearchQuerySet
 
 from api.models import Capsule, Link
-from utils import MyEncoder, int_or_none, api_login_required
+from utils import MyEncoder, int_or_none, api_login_required, serialize
 
 # figure out what the proper error code should be -> look it up in the google
 # RESTful api docs
@@ -24,14 +24,6 @@ def sanitize_capsule_list(capsules):
     for cap in caps:
         cap.pop('_state')
     return caps
-
-def serialize(obj):
-    json_string = serializers.serialize('json', [obj])
-    data = json.loads(json_string)
-    res = {'id': data[0]['pk']}
-    for k, v in data[0]['fields'].iteritems():
-        res[k] = v
-    return json.dumps(res)
 
 # all the api functions should have an @login_required, but they shouldn't
 # redirect to the default 404 page since that would suck for someone using the
@@ -76,6 +68,7 @@ def update_capsule(request, capsule_id):
         query_dict.pop('first_created')
         query_dict.pop('last_modified')
         query_dict.pop('id')
+        query_dict.pop('links')
         authors = User.objects.filter(username__in=query_dict.pop('authors'))
         # will only be one iteration
         for ca in cap:
@@ -199,18 +192,34 @@ def get_author(request, username):
                         content_type="application/json")
 
 @api_login_required
-@require_http_methods(["POST"])
-def link(request, from_id, to_id):
+@require_http_methods(["POST", "DELETE"])
+def create_link(request, from_id, to_id):
     from_cap = Capsule.objects.get(pk=from_id)
     to_cap = Capsule.objects.get(pk=to_id)
-    link = Link(capsule=to_cap, **request.POST)
-    if not Capsule.objects.filter(pk=from_cap.pk, links__capsule=to_cap):
-        link.save()
-        from_cap.links.add(link)
-        return HttpResponse(json.dumps({'data': 'success'}),
-                            content_type="application/json")
-    return HttpResponse(json.dumps({'data': 'link already exists'}),
-                        content_type='application/json')
+    if request.method == "POST":
+        link = Link(capsule=to_cap, **request.POST)
+        if not Capsule.objects.filter(pk=from_cap.pk, links__capsule=to_cap):
+            link.save()
+            from_cap.links.add(link)
+            return HttpResponse(json.dumps({'data': 'success'}),
+                                content_type="application/json")
+        return HttpResponse(json.dumps({'data': 'link already exists'}),
+                            content_type='application/json')
+    elif request.method == "DELETE":
+        link = from_cap.links.get(capsule=to_cap)
+        if link:
+            from_cap.links.remove(link)
+            link.delete()
+            return HttpResponse(json.dumps({'data': 'success'}),
+                                content_type="application/json")
+        return HttpResponse(json.dumps({'data': 'link does not exist'}),
+                            content_type='application/json')
+
+@api_login_required
+@require_http_methods(["GET"])
+def get_link(request, pk):
+    link = Link.objects.get(pk=pk)
+    return HttpResponse(serialize(link), content_type="application/json")
 
 def search(request):
     sqs = SearchQuerySet().filter(content=Fuzzy(request.GET['q']))

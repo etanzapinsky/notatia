@@ -31,6 +31,10 @@ var Capsule = Backbone.Model.extend({
     },
 });
 
+var Link = Backbone.Model.extend({
+    urlRoot: '/api/link/',
+})
+
 // fetch is currently f-ed up
 var CapsuleView = Backbone.View.extend({
     tagName: "div",
@@ -49,28 +53,49 @@ var CapsuleView = Backbone.View.extend({
     }
 });
 
+var linked_template = _.template('<h4 class="title"><span><%= title %></span><button class="btn btn-danger pull-right link">Unlink</button></h4><p><%= text %></p>');
+var unlinked_template = _.template('<h4 class="title"><span><%= title %></span><button class="btn btn-success pull-right link">Link</button></h4><p><%= text %></p>');
+
 var FriendCapsuleView = CapsuleView.extend({
     className: "capsule friend",
-    template: _.template('<h4 class="title"><span><%= title %></span><button class="btn btn-success pull-right link">Link</button></h4><p><%= text %></p>'),
+    template: unlinked_template,
+    linked_template: linked_template,
+    unlinked_template: unlinked_template,
     events: $.extend(this.events, {
         "click button.link": function(e) {
+            self = this; // for some reason no var works properly
             e.preventDefault();
             e.stopImmediatePropagation();
-            $.ajax({
-                type: 'POST',
-                url: '/api/link/' + window.capsule.id + '/' + this.model.id,
-                data: {},
-                success: function(data, status, jqXHR) {
-                    // this.original_template = this.template;
-                    // this.template = _.template('<h4 class="title"><span><%= title %></span><button class="btn btn-danger pull-right link">Unlink</button></h4><p><%= text %></p>');
-                    // debugger;
-                    // this.render();
-                    console.log(data);
-                },
-                error: function(jqXHR, status, error) {
-                    console.log(error);
-                }
-            });
+            if (this.$('button').text() == 'Unlink') {
+                $.ajax({
+                    type: 'DELETE',
+                    url: '/api/link/' + window.capsule.id + '/' + this.model.id,
+                    data: {},
+                    success: function(data, status, jqXHR) {
+                        self.template = unlinked_template;
+                        self.render();
+                        console.log(data);
+                    },
+                    error: function(jqXHR, status, error) {
+                        console.log(error);
+                    }
+                });                
+            }
+            else if (this.$('button').text() == 'Link') {
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/link/' + window.capsule.id + '/' + this.model.id,
+                    data: {},
+                    success: function(data, status, jqXHR) {
+                        self.template = linked_template;
+                        self.render();
+                        console.log(data);
+                    },
+                    error: function(jqXHR, status, error) {
+                        console.log(error);
+                    }
+                });
+            }
         },
         "click": redirect
     })
@@ -138,6 +163,17 @@ $(document).ready(function(e) {
                 var res = sanitize_list(data);
                 for (var i = 0; i < res.length; i++) {
                     var view = new ProperCapsuleView({model: res[i]});
+                    if (window.capsule) {
+                        view.template = view.unlinked_template;
+                        links = window.capsule.attributes.links;
+                        for (var j = 0; j < links.length; j++) {
+                            if (view.model.attributes.id == links[j].capsule) {
+                                view.template = view.linked_template;
+                                view.render();
+                                break;
+                            }
+                        }
+                    }
                     $(view.el).appendTo($('#main-stream'));
                 }
                 l = res;

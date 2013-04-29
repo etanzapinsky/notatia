@@ -6,7 +6,7 @@
   <script src="{% static 'js/capsule-preview.js' %}"></script>
   <script>
     {% autoescape off %}
-    var capsule = sanitize(new Object({{ capsule }})[0]);
+    var capsule = new Capsule({{ capsule }});
     {% endautoescape %}
   </script>
 {% endblock %}
@@ -23,13 +23,13 @@
           </div>
       </form>
       <div id="main-stream">
-        <div class="friend capsule">I'm a linked Capsule!</div>
-        <div class="friend capsule">
-          <img class="img-rounded pull-right" src="http://i.imgur.com/smAy2ib.jpg" alt="dogs">
-            <h4 class="media-heading">Hey there little buddy</h4>
-            <p>This is my text.</p>
-          </div>
-        </div>
+        <!-- <div class="friend capsule">I'm a linked Capsule!</div> -->
+        <!-- <div class="friend capsule"> -->
+        <!--   <img class="img-rounded pull-right" src="http://i.imgur.com/smAy2ib.jpg" alt="dogs"> -->
+        <!--     <h4 class="media-heading">Hey there little buddy</h4> -->
+        <!--     <p>This is my text.</p> -->
+        <!--   </div> -->
+      </div>
       <div class="pagination pagination-centered">
         <ul>
           <li class="disabled"><a href="#">&laquo;</a></li>
