@@ -129,6 +129,17 @@ var PopupCapsuleView = CapsuleView.extend({
                 success: function(model, response, options) {
                     self.template = popup_view_template;
                     self.render();
+                    $.ajax({
+                        type: 'POST',
+                        url: '/api/link/' + window.capsule.id + '/' + self.model.id,
+                        data: self.pos,
+                        success: function(data, status, jqXHR) {
+                            console.log(data);
+                        },
+                        error: function(jqXHR, status, error) {
+                            console.log(error);
+                        }
+                    });
                 }
             });
         },
@@ -147,6 +158,7 @@ var MainCapsuleView = CapsuleView.extend({
         "mouseup div": function(e) {
             var selection;
             var new_capsule = new PopupCapsuleView({model: new Capsule()});
+            new_capsule.pos = {};
 
             // NOTE: this only works moving forward in the text
             if (window.getSelection) {
@@ -157,6 +169,10 @@ var MainCapsuleView = CapsuleView.extend({
                         'left': e.pageX
                     })
                     $(this.el).after(new_capsule.el);
+                };
+                new_capsule.pos = {
+                    'left': selection.baseOffset,
+                    'width': selection.extentOffset
                 }
                 var text = selection.baseNode.textContent;
                 var new_html = $('<span class="selection">' + text.slice(selection.baseOffset, selection.extentOffset) + '</span>')[0];

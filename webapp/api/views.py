@@ -198,7 +198,7 @@ def create_link(request, from_id, to_id):
     from_cap = Capsule.objects.get(pk=from_id)
     to_cap = Capsule.objects.get(pk=to_id)
     if request.method == "POST":
-        link = Link(capsule=to_cap, **request.POST)
+        link = Link(capsule=to_cap, **{k:v for k,v in request.POST.iteritems()})
         if not Capsule.objects.filter(pk=from_cap.pk, links__capsule=to_cap):
             link.save()
             from_cap.links.add(link)
