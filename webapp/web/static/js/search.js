@@ -98,6 +98,17 @@ var FriendCapsuleView = CapsuleView.extend({
                         console.log(error);
                     }
                 });
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/link/' + this.model.id + '/' + window.capsule.id,
+                    data: {},
+                    success: function(data, status, jqXHR) {
+                        console.log(data);
+                    },
+                    error: function(jqXHR, status, error) {
+                        console.log(error);
+                    }
+                });
             }
         },
         "click": redirect
