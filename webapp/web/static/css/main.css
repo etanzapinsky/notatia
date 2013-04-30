@@ -18,78 +18,6 @@ body {
     background-image: url('/static/img/background-pattern.png');
 }
 
-
-/* .mainbox { */
-/*     height: 300px; */
-/*     width:100%; */
-/*     background: #99CCCC; */
-/*     border-radius: 5px; */
-/* } */
-
-/* .addcapsule { */
-/*     border: 3px solid #99CCCC; */
-/*     border-radius: 5px; */
-/*     width:500px; */
-/* } */
-
-/* textarea { */
-/*     width: 487px; */
-/*     resize:none; */
-/* } */
-
-/* #text { */
-/*     height:250px; */
-/* } */
-
-/* #tags { */
-/*     width:487px; */
-/* } */
-
-/* button { */
-/*     background: #99CCCC; */
-/*     border-radius: 25px; */
-/*     border-style: none; */
-/*     font-size: 1.5em; */
-/* } */
-
-/* #new_capsule { */
-/*     width: 200px; */
-/* } */
-
-/* #add_capsule { */
-/*     width: 50px; */
-/*     margin-left: 400px; */
-/*     margin-top: 10px; */
-/* } */
-
-/* #form_float { */
-/*     height: 50px; */
-/*     width: 487px; */
-
-/* } */
-
-/* #info { */
-/*     margin-left: 200px; */
-/*     margin-top: 200px; */
-/*     font-size: 1em; */
-    
-/* } */
-
-/* .login { */
-/*     background: #99CCCC; */
-/*     height: 50px; */
-/*     width: 200px; */
-/*     border-radius: 25px; */
-/*     border-style: none; */
-/*     font-size: 1.5em; */
-/*     float: right; */
-/*     text-align: center; */
-/* } */
-
-/* .drawing-container { */
-/*     position: relative; */
-/* } */
-
 .selection-box {
     position: fixed;
     background: transparent;
@@ -105,6 +33,8 @@ body {
     position: fixed;
     border: 2px solid #65909A;
     border-radius: 5px;
+    cursor: hand;
+    cursor: pointer;
 }
 
 .scaffold {
@@ -261,4 +191,9 @@ h4 button {
 
 #search-form {
     margin-left: 30px;
+}
+
+.stream img {
+    height: 120px;
+    width: auto;
 }
