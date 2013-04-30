@@ -250,6 +250,11 @@ h4 button {
     height: 100%;
 }
 
+.friend img {
+    height: 40px;
+    width: auto;
+}
+
 .popup-view-close {
     margin-left: 5px;
 }

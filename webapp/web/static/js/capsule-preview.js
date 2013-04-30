@@ -33,7 +33,6 @@ $(document).ready(function() {
             data: {},
             success: function(data, status, jqXHR) {
                 var view = new FriendCapsuleView({model: new Capsule(data)});
-                view.original_template = view.template;
                 view.template = view.linked_template;
                 view.render();
                 var match;

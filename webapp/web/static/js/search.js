@@ -53,8 +53,8 @@ var CapsuleView = Backbone.View.extend({
     }
 });
 
-var linked_template = _.template('<h5 class="title"><span><%= title %></span><button class="btn btn-danger pull-right link">Unlink</button></h5><p><%= text %></p>');
-var unlinked_template = _.template('<h4 class="title"><span><%= title %></span><button class="btn btn-success pull-right link">Link</button></h4><p><%= text %></p>');
+var linked_template = _.template('<h5 class="title"><span><%= title %></span><button class="btn btn-danger pull-right link">Unlink</button></h5><p class="text-center"><% if (path) { %><img src="<%= path %>" /><% } else { %><%= text %><% } %></p>');
+var unlinked_template = _.template('<h4 class="title"><span><%= title %></span><button class="btn btn-success pull-right link">Link</button></h4><p class="text-center"><% if (path) { %><img src="<%= path %>" /><% } else { %><%= text %><% } %></p>');
 
 var popup_edit_template = _.template('<p class="underline"><input class="input-large" type="text" id="popup-title" value="<%= title %>"</input><button class="close" data-dimiss="alert">&times;</button></p><textarea id="popup-textarea"><%= text %></textarea><button class="btn btn-primary pull-right bottom-button" id="save-button">Save</button>');
 var popup_view_template = _.template('<h4 class="title"><span><%= title %></span><button class="close pull-right popup-view-close" data-dimiss="alert">&times;</button><button class="btn pull-right link" id="edit-button">Edit</button></h4><p><%= text %></p>');
