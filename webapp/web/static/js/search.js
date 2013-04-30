@@ -112,13 +112,15 @@ var StreamCapsuleView = CapsuleView.extend({
 var PopupCapsuleView = CapsuleView.extend({
     className: 'new-capsule-box capsule fade in',
     template: popup_edit_template,
+    popup_view_template: popup_view_template,
+    popup_edit_template: popup_edit_template,
     events: {
         "click .close": function(e) {
             e.preventDefault();
             this.$el.remove();
-            $('span.selection').contents().unwrap();
-            $('span.selection').remove();
-            $('#main-capsule-body').text($('#main-capsule-body').text());
+            var sel = $('span.selection');
+            sel.removeClass('selection');
+            sel.addClass('previewable');
         },
         "click #save-button": function(e) {
             e.preventDefault();
@@ -127,7 +129,7 @@ var PopupCapsuleView = CapsuleView.extend({
             self = this;
             this.model.save({}, {
                 success: function(model, response, options) {
-                    self.template = popup_view_template;
+                    self.template = self.popup_view_template;
                     self.render();
                     $.ajax({
                         type: 'POST',
@@ -206,6 +208,16 @@ var MainCapsuleView = CapsuleView.extend({
                     }
                 });
             }
+        },
+        "click .previewable": function(e) {
+            var popup = capsule.links[0];
+            popup.$el.css({
+                'top': e.pageY,
+                'left': e.pageX
+            })
+            popup.template = popup.popup_view_template;
+            popup.render();
+            $(this.el).after(popup.el);
         }
     }
 });

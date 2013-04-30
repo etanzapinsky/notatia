@@ -19,7 +19,6 @@ $(document).ready(function() {
     }
     else {
         var main_capsule = new MainCapsuleView({model: new Capsule()});
-        capsule.view = main_capsule;
         main_capsule.template = main_capsule.edit_template;
         main_capsule.render();
         $(main_capsule.el).attr('id', 'main-capsule');
@@ -47,8 +46,22 @@ $(document).ready(function() {
                 }
                 else {
                     var t = capsule.attributes.text;
+                    // var text = document.createTextNode(t);
+                    // debugger;
+                    // var r = document.createRange();
+                    // r.setStart(text, match.left);
+                    // r.setEnd(text, match.width);
+                    // var contents = r.extractContents().textContent;
+                    // var new_html = $('<span class="previewable">' + contents + '</span>')[0];
+                    // r.deleteContents();
+                    // r.insertNode(new_html);
                     var new_html = t.slice(0, match.left) + '<span class="previewable">' + t.slice(match.left, match.width) + '</span>' + t.slice(match.width);
                     $('#main-capsule-body').html(new_html);
+                    capsule.links.push(new PopupCapsuleView({model: new Capsule(data)}));
+                    view.template = view.popup_view_template;
+                    view.$el.hide();
+                    view.render();
+                    $('#main-capsule-body').after(view.el);
                 }
             },
             error: function(jqXHR, status, error) {

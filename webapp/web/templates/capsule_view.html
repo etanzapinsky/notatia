@@ -7,6 +7,9 @@
   <script>
     {% autoescape off %}
     var capsule = {% if capsule %}new Capsule({{ capsule }}){% else %}null{% endif %};
+    if (capsule) {
+        capsule.links = [];
+    }
     {% endautoescape %}
   </script>
 {% endblock %}

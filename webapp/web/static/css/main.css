@@ -165,6 +165,8 @@ body {
 
 .previewable {
     background-color: yellow;
+    cursor: hand;
+    cursor: pointer;
 }
 
 .new-capsule-box {

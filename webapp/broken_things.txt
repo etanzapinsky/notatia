@@ -1,0 +1,11 @@
+=============
+Broken Things
+ Don't do these things for fear of catastraphy
+=============
+
+- More than one inner linked capsule
+- Highlight over a linked, or previously linked thing, text is removed
+- Cant x out of more than one capsule
+- Cant edit global capsule and retain highlightings of main capsule
+- Search is really screwy
+
