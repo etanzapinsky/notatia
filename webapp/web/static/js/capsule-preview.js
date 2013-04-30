@@ -41,10 +41,10 @@ $(document).ready(function() {
                     if (links[j].capsule == data.id)
                         match = links[j];
                 }
-                if (match.left == null) {
+                if (match.left === null) {
                     $(view.el).appendTo($('#main-stream'));
                 }
-                else {
+                else if (match.top === null) {
                     var t = capsule.attributes.text;
                     // var text = document.createTextNode(t);
                     // debugger;
@@ -62,6 +62,29 @@ $(document).ready(function() {
                     view.$el.hide();
                     view.render();
                     $('#main-capsule-body').after(view.el);
+                }
+                else {
+                    var view = new PopupCapsuleView({model: new Capsule(data)});
+                    view.template = view.popup_view_template;
+                    view.$el.hide();
+                    view.render();
+                    var comment = $('<div>').addClass('comment-box').css({
+                        'z-index': 1,
+                        'top': match.top,
+                        'left': match.left,
+                        'width': match.width,
+                        'height': match.height
+                    });
+                    view.$el.css({
+                        'left': match.left + match.width,
+                        'top': match.top + match.height
+                    });
+                    $('#main-capsule').after(comment);
+                    $('#main-capsule').after(view.el);
+                    comment.click(function(e) {
+                        e.preventDefault();
+                        view.$el.show();
+                    })
                 }
             },
             error: function(jqXHR, status, error) {

@@ -6,6 +6,10 @@ Broken Things
 - More than one inner linked capsule
 - Highlight over a linked, or previously linked thing, text is removed
 - Cant x out of more than one capsule
-- Cant edit global capsule and retain highlightings of main capsule
+- Cant edit global capsule and retain highlightings of main capsule (both text and images have this problem)
 - Search is really screwy
-
+- When x out of popup edit capsule, will still highlight text
+- Don't scroll page on images bc of fixed positioning
+- Make sure to be clicking on image before starting to drag, otherwise will drag image and not create selection
+- Don't draw popup edit box too close to bottom of page, will chop off the bottom
+- Be careful with long titles

@@ -46,38 +46,29 @@ $(document).ready(function() {
         var cap_height = 100
         var cap_width = 100
 
-        var cap_top = (e.pageY < cap_height) ? e.pageY : e.pageY - cap_height;
         var cap_left = (document.witdh - e.pageX < cap_width) ? e.pageX - cap_width : e.pageX;
 
-        var cap = $('<div>').addClass('new-capsule-box').css({
-            'position': 'absolute',
-            'width': cap_width,
-            'height': cap_height,
-            'top': cap_top,
-            'left': cap_left,
-            'border': '1px solid red',
-            'background': 'white'
-        });
+        // var cap = $('<div>').addClass('capsule').css({
+        //     'position': 'fixed',
+        //     'border': '1px solid red',
+        //     'background': 'white'
+        // });
 
-        comment.appendTo($(this));
-        $(this).after(cap);
-    });
+        var new_capsule = new PopupCapsuleView({model: new Capsule()});
 
-    $(document).click(function (e) {
-        var new_capsule_box = $('.new-capsule-box');
+        $('#main-capsule').after(comment);
 
-        if (new_capsule_box.is(':visible')) {
-            new_capsule_box.hide();
+        new_capsule.pos = {
+            'left': comment.position().left,
+            'top': comment.position().top,
+            'width': comment.width(),
+            'height': comment.height()
         }
-
-        // console.log(e);
-        // console.log($.inArray(e.target, new_capsule_box));
-        // if ($.inArray(e.target, new_capsule_box) == -1) {
-        //     new_capsule_box.hide();
-        // }
-    });
-
-    $('.new-capsule-box').click(function(e){
-        e.stopPropagation();
+        new_capsule.$el.css({
+            'position': 'absolute',
+            'top': e.pageY,
+            'left': cap_left,
+        });
+        $('#main-capsule').after(new_capsule.el);
     });
 }); 

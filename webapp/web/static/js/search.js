@@ -53,7 +53,7 @@ var CapsuleView = Backbone.View.extend({
     }
 });
 
-var linked_template = _.template('<h4 class="title"><span><%= title %></span><button class="btn btn-danger pull-right link">Unlink</button></h4><p><%= text %></p>');
+var linked_template = _.template('<h5 class="title"><span><%= title %></span><button class="btn btn-danger pull-right link">Unlink</button></h5><p><%= text %></p>');
 var unlinked_template = _.template('<h4 class="title"><span><%= title %></span><button class="btn btn-success pull-right link">Link</button></h4><p><%= text %></p>');
 
 var popup_edit_template = _.template('<p class="underline"><input class="input-large" type="text" id="popup-title" value="<%= title %>"</input><button class="close" data-dimiss="alert">&times;</button></p><textarea id="popup-textarea"><%= text %></textarea><button class="btn btn-primary pull-right bottom-button" id="save-button">Save</button>');
@@ -153,8 +153,8 @@ var PopupCapsuleView = CapsuleView.extend({
     }
 })
 
-var view_template = _.template('<h1 class="title"><%= title %><button class="btn pull-right top-button" id="edit-button">Edit</button></h1><div id="main-capsule-body"><%= text %></div>');
-var edit_template = _.template('<h1 class="title"><input id="title-input" class="input-xxlarge" value="<%= title %>"</input><button type="submit" class="btn btn-danger pull-right top-button" id="delete-button" data-toggle="modal" href="#are-you-sure">Delete</button></h1><textarea id="text-input" id="main-capsule-body"><%= text %></textarea><button class="btn btn-primary pull-right bottom-button" id="save-button">Save</button>');
+var view_template = _.template('<h1 class="title"><%= title %><button class="btn pull-right top-button" id="edit-button">Edit</button></h1><div id="main-capsule-body"><% if (path) { %><div class="drawing-container"><img src="<%= path %>" /></div><% } else { %><%= text %><% } %></div>');
+var edit_template = _.template('<h1 class="title"><input class="input-xxlarge" type="text" value="<%= title %>" id="title-input"</input><button type="submit" class="btn btn-danger pull-right top-button" id="delete-button" data-toggle="modal" href="#are-you-sure">Delete</button></h1><ul class="nav nav-pills"><li class="active"><a href="#text-input" data-toggle="tab">Text</a></li><li><a href="#image-input" data-toggle="tab">Image</a></li></ul><div class="tab-content"><textarea id="text-input" class="tab-pane active"><%= text %></textarea><input class="tab-pane" type="text" id="image-input" value="<%= path %>"</input></div><button class="btn btn-primary pull-right bottom-button" id="save-button">Save</button>');
 
 var MainCapsuleView = CapsuleView.extend({
     className: "span8 capsule",
@@ -190,6 +190,7 @@ var MainCapsuleView = CapsuleView.extend({
         },
         "click #edit-button": function(e) {
             e.preventDefault();
+            $('#main-body .comment-box').remove();
             this.template = this.edit_template;
             this.render();
         },
@@ -197,6 +198,7 @@ var MainCapsuleView = CapsuleView.extend({
             e.preventDefault();
             this.model.attributes.title = this.$('#title-input').val();
             this.model.attributes.text = this.$('#text-input').val();
+            this.model.attributes.path = this.$('#image-input').val();
             if (this.model.id) {
                 this.model.save();
                 this.template = this.view_template;
@@ -218,7 +220,7 @@ var MainCapsuleView = CapsuleView.extend({
             popup.template = popup.popup_view_template;
             popup.render();
             $(this.el).after(popup.el);
-        }
+        },
     }
 });
 

@@ -4,6 +4,7 @@
 {% block scripts %}
   <script src="{% static 'js/search.js' %}"></script>
   <script src="{% static 'js/capsule-preview.js' %}"></script>
+  <script src="{% static 'js/image-box.js' %}"></script>
   <script>
     {% autoescape off %}
     var capsule = {% if capsule %}new Capsule({{ capsule }}){% else %}null{% endif %};
