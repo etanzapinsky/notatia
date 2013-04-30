@@ -17,18 +17,6 @@ def index(request):
         return render(request, 'main_page.html', {'user': request.user.username})
     else:
         return render(request, 'landing_page.html')
-        
-def about(request):
-   return render(request, 'about.html')
-   
-def contact(request):
-    return render(request, 'contact.html')
-    
-def faq(request):
-    return render(request, 'faq.html')
-
-def team(request):
-    return render(request, 'team.html')
 
 def image_test(request):
     return render(request, 'image_test.html')
