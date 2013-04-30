@@ -1,11 +1,33 @@
-{% extends "base.html" %}
+{% load staticfiles %}
 
-{% block content %}
-
-<h1>Welcome to Notatia</h1>
-
-<div>If you have an account please <a href="{% url 'login' %}">login here</a>.</div>
-
-<div>If you dont have an account, dont worry, you can <a href="{% url 'create_account' %}">create one here</a>.</div>
-
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Notatia | Your Corporate Collaborative Memory</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+    <style type="text/css">
+      html, body, #wrapper {
+        height:100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        border: 0;
+      }
+      #wrapper td {
+        vertical-align: middle;
+        text-align: center;
+      }
+    </style>
+  </head>
+<body>
+   <table id="wrapper">
+      <tr>
+         <td><img src="{% static 'img/notatia_logo.png' %}" alt="" /></td>
+      </tr>
+      <tr>
+        <td><a class="btn btn-info" href="{% url 'login' %}">Enter Here</a></td>
+      </tr>
+   </table>
+</body>
+</html>
