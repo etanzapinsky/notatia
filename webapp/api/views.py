@@ -120,7 +120,7 @@ def recent_capsules(request):
     query_dict = request.GET
     limit = query_dict.get('limit', 10)
     to_time = int_or_none(query_dict.get('to_time'))
-    to_time = datetime.datetime.fromtimestamp(to_time) if to_time else datetime.datetime.now()
+    to_time = datetime.datetime.fromtimestamp(to_time) if to_time else datetime.datetime.utcnow()
     to_time = to_time.replace(tzinfo=utc)
     capsules = Capsule.objects \
         .filter(authors=request.user, last_modified__lt=to_time) \
