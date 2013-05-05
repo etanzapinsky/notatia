@@ -34,3 +34,9 @@ tell you to make sure your database is up to date to run `./manage.py
 migrate web` and `./manage.py migrate api`. Then for search to work
 you have to run `./manage.py rebuild_index`, this builds the elastic
 search indexes.
+
+Current Implementation Status
+-----------------------------
+There is no live version of the site online yet since it is not ready
+for production, but it has been demoable (as shown in class), and is
+running locally on all our machines.
